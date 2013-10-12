@@ -1,3 +1,0 @@
-#! /usr/bin/env bash
-killall love
-open -n -a /Applications/love.app/Contents/MacOS/love `pwd` &
