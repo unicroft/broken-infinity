@@ -86,6 +86,7 @@ GameObject:
   - 92: {fileID: 42508152}
   - 124: {fileID: 42508151}
   - 81: {fileID: 42508150}
+  - 114: {fileID: 42508155}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -153,6 +154,18 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+--- !u!114 &42508155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 42508149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4466bef4d18bb447b78589291ab5bf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
 --- !u!1 &250843674
 GameObject:
   m_ObjectHideFlags: 0
@@ -193,7 +206,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   physicsMaterial: {fileID: 13400000, guid: 585faf7dff34a864bb2ed2b3306445b8, type: 2}
-  terrainMaterial: {fileID: 2100000, guid: 934b1fd6c57a6ea419d2cf068e077f27, type: 2}
+  terrainMaterialBorder: {fileID: 2100000, guid: 934b1fd6c57a6ea419d2cf068e077f27,
+    type: 2}
+  terrainMaterialInside: {fileID: 2100000, guid: f2d0ac2a2c31a744daadf39b8ad9427d,
+    type: 2}
+  terrainGenerator:
+    deltaIncline: -.209999993
+    minHeight: 0
+    maxHeight: 0
+    minDeltaX: 0
+    minDeltaY: 0
+    rangeDeltaX: 0
+    rangeDeltaY: 0
+    zPositionOfTerrain: 0
 --- !u!1001 &2051239661
 Prefab:
   m_ObjectHideFlags: 0
@@ -229,6 +254,18 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 0ed8548720b92f14ba8b05bc39c68094, type: 2}
+      propertyPath: terrainGenerator.deltaIncline
+      value: -.209999993
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 0ed8548720b92f14ba8b05bc39c68094, type: 2}
+      propertyPath: terrainMaterialBorder
+      value: 
+      objectReference: {fileID: 2100000, guid: 934b1fd6c57a6ea419d2cf068e077f27, type: 2}
+    - target: {fileID: 11400000, guid: 0ed8548720b92f14ba8b05bc39c68094, type: 2}
+      propertyPath: terrainMaterialInside
+      value: 
+      objectReference: {fileID: 2100000, guid: f2d0ac2a2c31a744daadf39b8ad9427d, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0ed8548720b92f14ba8b05bc39c68094, type: 2}
   m_RootGameObject: {fileID: 250843674}

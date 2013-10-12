@@ -3,32 +3,35 @@ using System.Collections;
 using System.Collections.Generic;
 //http://www.youtube.com/watch?v=nPX8dw283X4
 
+[System.Serializable]
 public class TerrainGenerator : IEnumerable<Vector3>
 {
+
 	public float deltaIncline = 0;
 	public float minHeight = 30;
 	public float maxHeight = Screen.height - 100;
 	
 	public float minDeltaX = Screen.width / 3;
-	public float minDeltaY = Screen.height / 5;
+	public float minDeltaY = Screen.height / 4;
 	public float rangeDeltaX = Screen.width / 6;
-	public float rangeDeltaY = Screen.width / 8;
-	
+	public float rangeDeltaY = Screen.height / 4;
+
 	public float zPositionOfTerrain = 0;
 	
 	private IEnumerator<Vector3> _internalEnumerator;
-	private Vector3[] _terrainKeyPoints = new Vector3[1000];
+	private List<Vector3> _terrainKeyPoints = new List<Vector3>();
 	private int _lastGeneratedPointIndex = -1;
 	
-	public TerrainGenerator()
+	public TerrainGenerator(Camera cam)
 	{
 		_internalEnumerator = this.GetEnumerator();
 		
-		maxHeight = Camera.main.orthographicSize - 100;
-		minDeltaX = Camera.main.orthographicSize / 2;
-		minDeltaY = Camera.main.orthographicSize / 4;
-		rangeDeltaX = Camera.main.orthographicSize;
-		rangeDeltaY = Camera.main.orthographicSize / 4;
+		minHeight = -150;
+		maxHeight = cam.orthographicSize - 100;
+		minDeltaX = cam.orthographicSize / 2;
+		minDeltaY = cam.orthographicSize / 4;
+		rangeDeltaX = cam.orthographicSize;
+		rangeDeltaY = cam.orthographicSize / 4;
 	}
 	
 	public Vector3 this[int index]
@@ -37,12 +40,18 @@ public class TerrainGenerator : IEnumerable<Vector3>
 		{
 			if ( index > _lastGeneratedPointIndex )
 			{
-				for( var i = 0; i <= index - _lastGeneratedPointIndex; i++)
-					_terrainKeyPoints[++_lastGeneratedPointIndex] = nextValue;
+				var numberIteration = index - _lastGeneratedPointIndex;
+				for( var i = 0; i < numberIteration; i++)
+				{
+					++_lastGeneratedPointIndex;
+					_terrainKeyPoints.Add(nextValue);
+				}
 			}
 			return _terrainKeyPoints[index];
 		}
 	}
+	
+	public int lastGeneratedIndex { get { return _lastGeneratedPointIndex; } }
 	
 	public Vector3 nextValue
 	{
@@ -71,6 +80,7 @@ public class TerrainGenerator : IEnumerable<Vector3>
 		
 		while( true )
 		{
+			Debug.Log("Delta Incline" + deltaIncline);
 			dx = Random.Range ( minDeltaX, rangeDeltaX + minDeltaX);
 			x += dx;
 			
@@ -102,7 +112,7 @@ public class TerrainGenerator : IEnumerable<Vector3>
 		var numValuesToShift = _lastGeneratedPointIndex - lastUsedIndex + 1;
 		for(var i = 0; i < numValuesToShift; i++)
 		{
-			_terrainKeyPoints[i] = _terrainKeyPoints[lastUsedIndex + i];	
+			_terrainKeyPoints[i] = _terrainKeyPoints[lastUsedIndex + i];
 		}
 		
 		_lastGeneratedPointIndex = numValuesToShift - 1;

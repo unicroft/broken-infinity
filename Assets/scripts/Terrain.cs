@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -14,35 +15,57 @@ public class Terrain
 	int prevFromKeyPointI = -1;
 	int prevToKeyPointI = -1;
 	
-	public int terrainSegmentWidth = 10;
-	public int textureSize = 1024;
+	public int terrainSegmentWidth = 2;
+	public int textureSize = 128;
 	
 	private GameObject _originGameObject;
 	
-	public Terrain( GameObject originGameObject) {
+	public Terrain( GameObject originGameObject, TerrainGenerator mterrainGenerator)
+	{
 		_originGameObject = originGameObject;
-		terrainGenerator = new TerrainGenerator();
+		terrainGenerator = mterrainGenerator;	
 	}
 	
-	public void generateMeshWithWidth(float width, MeshFilter meshFilter) {
-		terrainGenerator.resetToLastUsedIndex( _toKeyPointI);
+	public void generateMeshWithWidth(float width, MeshFilter meshFilter, MeshFilter[] underGroundFilter) {
+		//terrainGenerator.resetToLastUsedIndex( _toKeyPointI);
 		
-		_fromKeyPointI = 0;
-		_toKeyPointI = 0;
+		int prevFromKeyPointI = _fromKeyPointI;
+		int prevToKeyPointI = _toKeyPointI;
+		
+		
+		_fromKeyPointI = prevToKeyPointI;
+		_toKeyPointI = _fromKeyPointI;
+		
+		if(terrainGenerator[_fromKeyPointI].x > width)
+		{
+			_fromKeyPointI = 0;
+			_toKeyPointI = 0;
+		}
 		
 		while( terrainGenerator[++_toKeyPointI].x < width) {}
 		
-		drawMesh(meshFilter);
+		var start = DateTime.Now;
+		drawMesh(meshFilter, underGroundFilter);
+		Debug.Log(DateTime.Now - start);
 	}
 	
-	private void drawMesh(MeshFilter meshFilter)
+	private void drawMesh(MeshFilter meshFilter, MeshFilter[] underGroundFilter)
 	{
 		borderVertices.Clear();
+		
+		var undergoundHeight = underGroundFilter.Length;
 		
 		var terrainVertices = new List<Vector3>();
 		var terrainTextCoords = new List<Vector2>();
 		var triangles = new List<int>();
 		var trianglesIndex = -2;
+
+		var terrainVerticesUnderground = new List<Vector3>[undergoundHeight];
+		
+		for(int q = 0; q < undergoundHeight; q ++ )
+		{
+			terrainVerticesUnderground[q] = new List<Vector3>();
+		}
 		
 		Vector3 keyPoint0, keyPoint1, pt0, pt1 = new Vector3(0 ,0 ,terrainGenerator.zPositionOfTerrain);
 		keyPoint0 = terrainGenerator[_fromKeyPointI];
@@ -72,8 +95,15 @@ public class Terrain
 				
 				terrainVertices.Add(topVert);
 				terrainTextCoords.Add( new Vector2 ( pt0.x / textureSize, 1 ) );
-				terrainVertices.Add( new Vector3 (pt0.x , pt0.y -textureSize, terrainGenerator.zPositionOfTerrain) );
+				terrainVertices.Add( new Vector3 (pt0.x , pt0.y - textureSize, terrainGenerator.zPositionOfTerrain) );
 				terrainTextCoords.Add( new Vector2 ( pt0.x / textureSize, 0) );
+				
+				for(int q = 0; q < undergoundHeight; q ++ )
+				{
+					var q1 = q + 1;
+					terrainVerticesUnderground[q].Add(new Vector3(pt0.x, pt0.y - (textureSize * q1), terrainGenerator.zPositionOfTerrain));				
+					terrainVerticesUnderground[q].Add(new Vector3(pt0.x, pt0.y - (textureSize * (q1+1)), terrainGenerator.zPositionOfTerrain) );
+				}
 				
 				if( trianglesIndex >= 2)
 				{
@@ -93,7 +123,7 @@ public class Terrain
 		}
 		
 		var mesh = meshFilter.mesh;
-		mesh.Clear ();
+		mesh.Clear();
 		mesh.vertices = terrainVertices.ToArray();
 		mesh.uv = terrainTextCoords.ToArray();
 		mesh.triangles = triangles.ToArray();
@@ -101,6 +131,18 @@ public class Terrain
 		mesh.RecalculateBounds();
 		
 		addMeshCollider ( meshFilter, borderVertices );
+		//*
+		for(int q = 0; q < undergoundHeight; q ++ )
+		{
+			mesh = underGroundFilter[q].mesh;
+			mesh.Clear();
+			mesh.vertices = terrainVerticesUnderground[q].ToArray();
+			mesh.uv = terrainTextCoords.ToArray();
+			mesh.triangles = triangles.ToArray();
+			
+			mesh.RecalculateBounds();
+		}
+		//*/
 	}
 	
 	private void addMeshCollider( MeshFilter meshFilter, List<Vector3> borderVerts) 
