@@ -1,4 +1,5 @@
 using UnityEngine;
+using XboxCtrlrInput;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -12,7 +13,7 @@ public class PlayerController : BaseGame
         Running, 
         Jumping, 
     }
-
+	
     [System.Serializable]
     public class TextureSettings
     {
@@ -31,18 +32,23 @@ public class PlayerController : BaseGame
     // bool mIsOnGround = false;
 
     // player handling
-	public float gravity = 20;
-    public float speed = 62;
-    public float acceleration = 84;
-	public float jumpHeight = 62;
+	public int joystick_id = 1;
+	public float gravity = 500;
+    public float speed = 250;
+    public float acceleration = 500;
+	public float jumpHeight = 250;
 	
     private float currentSpeed;
     private float targetSpeed;
 	private Vector2 amountToMove;
 	private PlayerPhysics playerPhysics;
 	
+	private bool falling = false;
+	private bool jumpKeyReleased = true;
+	
 	void Start(){
 		playerPhysics = GetComponent<PlayerPhysics>();	
+		
 	}
 	
     void OnCollisionEnter(Collision collision)
@@ -106,25 +112,39 @@ public class PlayerController : BaseGame
     }
 
     void OnGUI()
-    {
-        
+	{
     }
 
 
     void FixedUpdate()
     {
-        targetSpeed = Input.GetAxisRaw("Horizontal") * speed;
+		targetSpeed = XCI.GetAxisRaw(XboxAxis.LeftStickX, joystick_id) * speed;
         currentSpeed = IncrementTowards(currentSpeed, targetSpeed, acceleration);
 		
 		if (playerPhysics.grounded) {
-			amountToMove.y = 0;
-			if (Input.GetButtonDown("Jump")) {
-				amountToMove.y = jumpHeight;
+			if (!XCI.GetButton(XboxButton.A, joystick_id)) {
+				jumpKeyReleased = true;
 			}
+			
+			amountToMove.y = 0;
+			if (XCI.GetButton(XboxButton.A, joystick_id) && jumpKeyReleased) {
+				amountToMove.y = jumpHeight;
+				falling = false;
+				jumpKeyReleased = false;
+			}
+		} // en l'air
+		else {
+			if (!falling) {
+				if (!XCI.GetButton(XboxButton.A, joystick_id)) {
+					falling = true;
+					amountToMove.y = 0;
+				}
+			}	
 		}
 		
 		amountToMove.x = currentSpeed;
 		amountToMove.y -= gravity * Time.deltaTime;
+		if (amountToMove.y < 0) { falling = true; }
 		playerPhysics.Move(amountToMove * Time.deltaTime);
     }
 

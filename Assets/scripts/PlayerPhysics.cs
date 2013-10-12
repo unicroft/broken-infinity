@@ -21,7 +21,7 @@ public class PlayerPhysics : MonoBehaviour {
 	
 	public void Start() {
 		collider = GetComponent<BoxCollider>();
-		size = collider.size;
+		size = this.renderer.bounds.size;
 		center = collider.center;
 	}
 	
@@ -36,8 +36,7 @@ public class PlayerPhysics : MonoBehaviour {
 			float x = (p.x + center.x - size.x / 2) + size.x / 2 * i;
 			float y = p.y + center.y + size.y/2 * dir;
 			
-			ray = new Ray(new Vector2(x,y), new Vector2(0, dir));
-			
+			ray = new Ray(new Vector2(x,y), new Vector2(0, dir * size.y));
 			if (Physics.Raycast(ray, out hit, Mathf.Abs(deltaY), collisionMask)) {
 				float dst = Vector3.Distance(ray.origin, hit.point);
 				
