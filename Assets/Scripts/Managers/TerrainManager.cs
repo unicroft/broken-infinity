@@ -1,42 +1,44 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class TerrainManager : MonoBehaviour {
 
 	public PhysicMaterial physicsMaterial;
-	public Material terrainMaterial;
+	public Material terrainMaterialBorder;
+	public Material terrainMaterialInside;
+	public TerrainGenerator terrainGenerator;
 	
 	private Terrain _terrain;
 	private Camera _camera;
 	private Transform _cameraTransform;
 	
+	private const int numberOfUndergroundTiles = 2;
+	
 	private GameObject[] _terrainGameObjects = new GameObject[2];
+	private GameObject[][] _undergroundGameObjects = new GameObject[2][];
+	private MeshFilter[][] _undergroundMeshFilter = new MeshFilter[2][];
+	private List<GameObject>[] _objectives = new List<GameObject>[2];
 	private int _currentTerrainGameObjectIndex = -1;
+	
 	private float _meshMaxX;
+	private float _deltaMeshMaxX = 3500;
+	private float _meshMinX;
 	
 	void Awake() {
 
 		transform.position = Vector3.zero;
+		
 		_camera = Camera.main;
+		_camera.orthographicSize = Screen.height / 2;
 		_cameraTransform = _camera.transform;
 		
 		//terrain setup
-		_terrain = new Terrain( gameObject );
+		terrainGenerator = new TerrainGenerator(_camera);
+		_terrain = new Terrain( gameObject, terrainGenerator);
 		//_terrain.terrainGenerator.testOtherSetting();
 		
-		Texture2D mainTexture = new Texture2D(32,32);
-		
-		Color[] colors = new Color[32*32];
-		
-		for(var i = 0; i < 32 * 32; i++)
-		{
-			colors[i] = Color.green;
-		}
-		
-		mainTexture.SetPixels(colors);
-		mainTexture.Apply();
-		
-		terrainMaterial.mainTexture = Resources.Load("GreenSpeckledTile") as Texture;
+		_terrain.textureSize = terrainMaterialBorder.mainTexture.height;
 		
 		for(var i = 0; i <= 1; i++)
 		{
@@ -49,25 +51,59 @@ public class TerrainManager : MonoBehaviour {
 			collider.smoothSphereCollisions = true;
 			
 			var meshRenderer = go.AddComponent<MeshRenderer>();
-			meshRenderer.sharedMaterial = terrainMaterial;
+			meshRenderer.sharedMaterial = terrainMaterialBorder;
 			
 			_terrainGameObjects[i] = go;
 		}
+		
+		for(var i = 0; i < 2; i++)
+		{
+			_undergroundGameObjects[i] = new GameObject[numberOfUndergroundTiles];
+			_undergroundMeshFilter[i] = new MeshFilter[numberOfUndergroundTiles];
+			_objectives[i] = new List<GameObject>();
+			
+			for(var j = 0; j < numberOfUndergroundTiles; j++)
+			{
+				var go = new GameObject( "undergound " + i + " " + j);
+				go.transform.parent = transform;
+				_undergroundMeshFilter[i][j] = go.AddComponent<MeshFilter>();
+	
+				var meshRenderer = go.AddComponent<MeshRenderer>();
+				meshRenderer.sharedMaterial = terrainMaterialInside;
+				
+				_undergroundGameObjects[i][j] = go;
+			}
+		}
+		
+		
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		var cameraMaxX = _cameraTransform.position.x + _camera.orthographicSize * 2;
+		var cameraMinX = _cameraTransform.position.x - _camera.orthographicSize * 2;
 		if ( cameraMaxX > _meshMaxX)
 		{
 			_currentTerrainGameObjectIndex = (_currentTerrainGameObjectIndex+1)%2;
 			var go = _terrainGameObjects[_currentTerrainGameObjectIndex];
 			
 			_meshMaxX += 3500;
+			_meshMinX = cameraMinX;
 			
-			_terrain.generateMeshWithWidth( _meshMaxX, go.GetComponent<MeshFilter>() );
+			_terrain.generateMeshWithWidth( _meshMaxX, go.GetComponent<MeshFilter>() , _undergroundMeshFilter[_currentTerrainGameObjectIndex] , _objectives[_currentTerrainGameObjectIndex]);
 		}
-		Camera.main.transform.Translate(new Vector3(7,0,0));
+		//*
+		else if( cameraMinX < _meshMinX)
+		{
+			_currentTerrainGameObjectIndex = (_currentTerrainGameObjectIndex+1)%2;
+			var go = _terrainGameObjects[_currentTerrainGameObjectIndex];
+			
+			while(cameraMinX < _meshMaxX)
+				_meshMaxX = _meshMaxX - 3500;
+			
+			_terrain.generateMeshWithWidth( _meshMaxX, go.GetComponent<MeshFilter>(), _undergroundMeshFilter[_currentTerrainGameObjectIndex], _objectives[_currentTerrainGameObjectIndex]);
+		}
+		//*/
 	}
 	
 	void OnGUI()

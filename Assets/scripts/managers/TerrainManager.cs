@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class TerrainManager : MonoBehaviour {
 
@@ -12,11 +13,12 @@ public class TerrainManager : MonoBehaviour {
 	private Camera _camera;
 	private Transform _cameraTransform;
 	
-	private const int numberOfSUndergroundTile = 0;
+	private const int numberOfUndergroundTiles = 2;
 	
 	private GameObject[] _terrainGameObjects = new GameObject[2];
 	private GameObject[][] _undergroundGameObjects = new GameObject[2][];
 	private MeshFilter[][] _undergroundMeshFilter = new MeshFilter[2][];
+	private List<GameObject>[] _objectives = new List<GameObject>[2];
 	private int _currentTerrainGameObjectIndex = -1;
 	
 	private float _meshMaxX;
@@ -56,9 +58,11 @@ public class TerrainManager : MonoBehaviour {
 		
 		for(var i = 0; i < 2; i++)
 		{
-			_undergroundGameObjects[i] = new GameObject[numberOfSUndergroundTile];
-			_undergroundMeshFilter[i] = new MeshFilter[numberOfSUndergroundTile];
-			for(var j = 0; j < numberOfSUndergroundTile; j++)
+			_undergroundGameObjects[i] = new GameObject[numberOfUndergroundTiles];
+			_undergroundMeshFilter[i] = new MeshFilter[numberOfUndergroundTiles];
+			_objectives[i] = new List<GameObject>();
+			
+			for(var j = 0; j < numberOfUndergroundTiles; j++)
 			{
 				var go = new GameObject( "undergound " + i + " " + j);
 				go.transform.parent = transform;
@@ -86,7 +90,7 @@ public class TerrainManager : MonoBehaviour {
 			_meshMaxX += 3500;
 			_meshMinX = cameraMinX;
 			
-			_terrain.generateMeshWithWidth( _meshMaxX, go.GetComponent<MeshFilter>() , _undergroundMeshFilter[_currentTerrainGameObjectIndex]);
+			_terrain.generateMeshWithWidth( _meshMaxX, go.GetComponent<MeshFilter>() , _undergroundMeshFilter[_currentTerrainGameObjectIndex] , _objectives[_currentTerrainGameObjectIndex]);
 		}
 		//*
 		else if( cameraMinX < _meshMinX)
@@ -97,7 +101,7 @@ public class TerrainManager : MonoBehaviour {
 			while(cameraMinX < _meshMaxX)
 				_meshMaxX = _meshMaxX - 3500;
 			
-			_terrain.generateMeshWithWidth( _meshMaxX, go.GetComponent<MeshFilter>(), _undergroundMeshFilter[_currentTerrainGameObjectIndex] );
+			_terrain.generateMeshWithWidth( _meshMaxX, go.GetComponent<MeshFilter>(), _undergroundMeshFilter[_currentTerrainGameObjectIndex], _objectives[_currentTerrainGameObjectIndex]);
 		}
 		//*/
 	}

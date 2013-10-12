@@ -39,6 +39,6 @@ public class CameraController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void LateUpdate () {	
-		_transform.Translate(new Vector3(25,0,0));
+		_transform.Translate(new Vector3(10,0,0));
 	}
 }

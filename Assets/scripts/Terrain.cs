@@ -26,7 +26,7 @@ public class Terrain
 		terrainGenerator = mterrainGenerator;	
 	}
 	
-	public void generateMeshWithWidth(float width, MeshFilter meshFilter, MeshFilter[] underGroundFilter) {
+	public void generateMeshWithWidth(float width, MeshFilter meshFilter, MeshFilter[] underGroundFilter, List<GameObject> objs) {
 		//terrainGenerator.resetToLastUsedIndex( _toKeyPointI);
 		
 		int prevFromKeyPointI = _fromKeyPointI;
@@ -45,11 +45,11 @@ public class Terrain
 		while( terrainGenerator[++_toKeyPointI].x < width) {}
 		
 		var start = DateTime.Now;
-		drawMesh(meshFilter, underGroundFilter);
+		drawMesh(meshFilter, underGroundFilter, objs);
 		Debug.Log(DateTime.Now - start);
 	}
 	
-	private void drawMesh(MeshFilter meshFilter, MeshFilter[] underGroundFilter)
+	private void drawMesh(MeshFilter meshFilter, MeshFilter[] underGroundFilter , List<GameObject> objs)
 	{
 		borderVertices.Clear();
 		
@@ -70,6 +70,14 @@ public class Terrain
 		Vector3 keyPoint0, keyPoint1, pt0, pt1 = new Vector3(0 ,0 ,terrainGenerator.zPositionOfTerrain);
 		keyPoint0 = terrainGenerator[_fromKeyPointI];
 		
+		foreach(GameObject go in objs)
+		{
+			GameObject.Destroy(go);		
+		}
+		objs.Clear ();
+		
+		GameObject ob = GameObject.Find("Objective");
+		
 		for(int i = _fromKeyPointI + 1; i <= _toKeyPointI; i++)
 		{
 			keyPoint1 = terrainGenerator[i];
@@ -78,8 +86,21 @@ public class Terrain
 			float segmentWidth = ( keyPoint1.x - keyPoint0.x) / totalSegments;
 			float da = Mathf.PI / totalSegments;
 			float ymid = ( keyPoint0.y + keyPoint1.y ) / 2;
+			float xmid = ( keyPoint0.x + keyPoint1.x ) / 2;
 			float amplitude  = (keyPoint0.y - keyPoint1.y ) / 2;
 			pt0 = keyPoint0;
+			
+			Debug.Log(xmid + "  " + ymid);
+			
+			if(i%3==0 || i%5==1)
+			{
+				GameObject newOb = GameObject.Instantiate(ob) as GameObject;
+				newOb.name = "realobjective";
+				newOb.transform.Translate(new Vector3(-xmid,-ymid - 50,0));
+				objs.Add(newOb);
+			}
+			
+			Debug.Log(ymid);
 			
 			if ( i == _toKeyPointI)
 				totalSegments++;
