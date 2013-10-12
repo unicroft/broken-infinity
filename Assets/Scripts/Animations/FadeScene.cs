@@ -54,9 +54,9 @@ public class FadeScene : MonoBehaviour {
         else
         {
             if (opaque)
-                this.color.a += Time.deltaTime / fadeTime;
+                this.color.a += (float)Time.deltaTime / (float)fadeTime;
             else
-                this.color.a -= Time.deltaTime / fadeTime;
+                this.color.a -= (float)Time.deltaTime / (float)fadeTime;
         }
 	}
 
