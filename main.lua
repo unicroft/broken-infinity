@@ -2,7 +2,7 @@
 require "src.player"
 
 function love.load()
-    player1 = Player.new("Player 1", 25, 250, 100)
+    player1 = Player("Player 1", 25, 250, 100)
 end
 
 function love.update(dt)

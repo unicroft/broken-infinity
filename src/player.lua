@@ -1,19 +1,13 @@
-Player = {}
-Player.__index = Player
+require 'src.class'
 
-
-function Player.new(name, x, y, size)
-    local p = {}            -- new object
-    setmetatable(p, Player)
-
+Player = class(function(p, name, x, y, size)
     -- init
     p.name = name
     p.x = x
     p.y = y
     p.size = size
-
-    return p
-end
+    end
+)
 
 function Player:draw()
     love.graphics.setColor(255, 0, 0, 128)
