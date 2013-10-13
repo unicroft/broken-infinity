@@ -126,8 +126,19 @@ public class PlayerController : BaseGame
 		targetSpeed = XCI.GetAxisRaw(XboxAxis.LeftStickX, joystick_id) * speed;
         currentSpeed = IncrementTowards(currentSpeed, targetSpeed, acceleration);
 		
-		float axis = XCI.GetAxisRaw(XboxAxis.LeftStickX, joystick_id);
 		
+		
+		float axis = 0;
+		if(Input.GetKey(KeyCode.RightArrow))
+		{
+			axis = 1.0f;
+		}
+		else if (Input.GetKey(KeyCode.LeftArrow))
+		{
+			axis = -1.0f;
+		}
+		axis = XCI.GetAxisRaw(XboxAxis.LeftStickX, joystick_id);
+
 		RaycastHit hit = new RaycastHit();
 
 		var castPos = new Vector3(transform.position.x,transform.position.y-0.25f,transform.position.z);
@@ -138,9 +149,10 @@ public class PlayerController : BaseGame
 			transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
 			
     		rigidbody.AddForce(gameObject.transform.right.normalized * axis * speed);
-			if(XCI.GetButton(XboxButton.A, joystick_id))
+			//if(XCI.GetButton(XboxButton.A, joystick_id))
+			if((Input.GetKey(KeyCode.Space))||((XCI.GetButton(XboxButton.A, joystick_id))))
 			{
-				rigidbody.AddForce((rigidbody.velocity + gameObject.transform.up).normalized * jumpHeight);
+				rigidbody.AddForce((rigidbody.velocity + new Vector3(0,1,0)).normalized * jumpHeight);
 			}
 
 		}
