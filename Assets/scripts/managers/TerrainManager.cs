@@ -13,7 +13,7 @@ public class TerrainManager : MonoBehaviour {
 	private Camera _camera;
 	private Transform _cameraTransform;
 	
-	private const int numberOfSUndergroundTile = 3;
+	private const int numberOfSUndergroundTile = 2;
 	
 	private GameObject[] _terrainGameObjects = new GameObject[2];
 	private GameObject[][] _undergroundGameObjects = new GameObject[2][];
