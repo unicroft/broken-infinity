@@ -36,7 +36,7 @@ public class PlayerController : BaseGame
 	public float gravity = 500;
     public float speed = 250;
     public float acceleration = 500;
-	public float jumpHeight = 250;
+	public float jumpHeight = 500;
 	
     private float currentSpeed;
     private float targetSpeed;
@@ -46,7 +46,12 @@ public class PlayerController : BaseGame
 	private bool falling = false;
 	private bool jumpKeyReleased = true;
 	
+	private GameObject player;
+	private Rigidbody rigidbody;
+	
 	void Start(){
+		player = gameObject;
+		rigidbody = gameObject.GetComponent<Rigidbody>();
 		playerPhysics = GetComponent<PlayerPhysics>();	
 		
 	}
@@ -121,6 +126,29 @@ public class PlayerController : BaseGame
 		targetSpeed = XCI.GetAxisRaw(XboxAxis.LeftStickX, joystick_id) * speed;
         currentSpeed = IncrementTowards(currentSpeed, targetSpeed, acceleration);
 		
+		float axis = XCI.GetAxisRaw(XboxAxis.LeftStickX, joystick_id);
+		
+		RaycastHit hit = new RaycastHit();
+
+		var castPos = new Vector3(transform.position.x,transform.position.y-0.25f,transform.position.z);
+		
+		if (Physics.Raycast (castPos, -Vector3.up,out hit) && hit.distance < 40) {
+			
+			
+			transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
+			
+    		rigidbody.AddForce(gameObject.transform.right.normalized * axis * speed);
+			if(XCI.GetButton(XboxButton.A, joystick_id))
+			{
+				rigidbody.AddForce((rigidbody.velocity + gameObject.transform.up).normalized * jumpHeight);
+			}
+
+		}
+		else
+		{
+			//transform.rotation = Quaternion.FromToRotation (Vector3.up, Vector3.up);
+		}
+		
 		if (playerPhysics.grounded) {
 			if (!XCI.GetButton(XboxButton.A, joystick_id)) {
 				jumpKeyReleased = true;
@@ -145,7 +173,7 @@ public class PlayerController : BaseGame
 		amountToMove.x = currentSpeed;
 		amountToMove.y -= gravity * Time.deltaTime;
 		if (amountToMove.y < 0) { falling = true; }
-		playerPhysics.Move(amountToMove * Time.deltaTime);
+		//playerPhysics.Move(amountToMove * Time.deltaTime);
     }
 
     private float IncrementTowards(float n, float target, float a) {

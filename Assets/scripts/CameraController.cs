@@ -41,11 +41,12 @@ public class CameraController : MonoBehaviour {
 	void LateUpdate () {
 		
 		Vector2 playerpos = (Vector2)player.position;
-		Vector2 camerapos = (Vector2)_transform.position;
+		Vector2 camerapos = (Vector2)_transform.position - new Vector2(50,0);
+		float distance = Vector2.Distance(playerpos,camerapos);
 		
-		if(Vector3.Distance(playerpos,camerapos) > 50)
+		if(distance > 50)
 		{
-			_transform.Translate((Vector3)((playerpos-camerapos) * Time.deltaTime));
+			_transform.Translate((Vector3)((playerpos-camerapos) * Time.deltaTime * 2));
 		}
 	}
 }

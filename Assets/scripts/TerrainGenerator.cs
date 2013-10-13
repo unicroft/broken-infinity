@@ -7,7 +7,7 @@ using System.Collections.Generic;
 public class TerrainGenerator : IEnumerable<Vector3>
 {
 
-	public float deltaIncline = 0;
+	public float deltaIncline = 10;
 	public float minHeight = 30;
 	public float maxHeight = Screen.height - 100;
 	
@@ -28,10 +28,10 @@ public class TerrainGenerator : IEnumerable<Vector3>
 		
 		minHeight = -150;
 		maxHeight = cam.orthographicSize - 100;
-		minDeltaX = cam.orthographicSize / 2;
+		minDeltaX = cam.orthographicSize;
 		minDeltaY = cam.orthographicSize / 4;
 		rangeDeltaX = cam.orthographicSize;
-		rangeDeltaY = cam.orthographicSize / 4;
+		rangeDeltaY = cam.orthographicSize / 2;
 	}
 	
 	public Vector3 this[int index]

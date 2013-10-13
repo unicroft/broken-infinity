@@ -13,7 +13,7 @@ public class TerrainManager : MonoBehaviour {
 	private Camera _camera;
 	private Transform _cameraTransform;
 	
-	private const int numberOfSUndergroundTile = 0;
+	private const int numberOfSUndergroundTile = 3;
 	
 	private GameObject[] _terrainGameObjects = new GameObject[2];
 	private GameObject[][] _undergroundGameObjects = new GameObject[2][];
@@ -45,6 +45,7 @@ public class TerrainManager : MonoBehaviour {
 		{
 			var go = new GameObject( "mesh " + i);
 			go.transform.parent = transform;
+			go.isStatic = true;
 			go.AddComponent<MeshFilter>();
 			
 			var collider = go.AddComponent<MeshCollider>();
@@ -93,7 +94,7 @@ public class TerrainManager : MonoBehaviour {
 			
 			_terrain.generateMeshWithWidth( _meshMaxX, go.GetComponent<MeshFilter>() , _undergroundMeshFilter[_currentTerrainGameObjectIndex], _objs[_currentTerrainGameObjectIndex]);
 		}
-		//*
+		/*
 		else if( cameraMinX < _meshMinX)
 		{
 			_currentTerrainGameObjectIndex = (_currentTerrainGameObjectIndex+1)%2;
