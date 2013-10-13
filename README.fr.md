@@ -7,7 +7,9 @@ Broken Infinity est un jeu de course tour par tour ayant comme thème l'infinie 
 
 ## Histoire
 
-@todo: Nicolas, speak your mind here
+Autre fois, il y avait le néant. De celui-ci surgit des univers et le dragon éternel: Ouroboros. La wyrm dévora chaque univers naissant un à un, les renvoyant à l'inexistance 
+et ne laissant pour trace que leur passage que quelques fragments d'étoiles. Mais il vint alors un univers particulier, le quarante-deuxième. Le dragon s'approche à nouveau. Courez, 
+petites étoiles, plus vite que vos pairs. Courez infiniement, ou soyez anéantit à tout jamais. Et qui sait? Peut-être que quelque chose changera vos destinée sur ce si long chemin...
 
 ## Prérequis
 
