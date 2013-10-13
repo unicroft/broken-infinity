@@ -11,6 +11,7 @@ public class SpriteAnimator : MonoBehaviour
 	
 	private bool isAnimating = false;
 	public bool hasPlayed = false;
+	public bool reverseSprite = false;
  
     public float RunTimeInSeconds
     {
@@ -65,7 +66,10 @@ public class SpriteAnimator : MonoBehaviour
 					{
 	                    x = (float) j / Columns;
 	 
-	                    offset.Set(x, y);
+						if (reverseSprite)
+	                    	offset.Set(x, y);
+						else
+							offset.Set(x, y);
 	 
 	                    renderer.sharedMaterial.SetTextureOffset("_MainTex", offset);
 					}
