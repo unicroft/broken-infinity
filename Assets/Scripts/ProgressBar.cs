@@ -158,6 +158,14 @@ public class ProgressBar : MonoBehaviour {
 		return isFull;
 	}
 	
+	public void reset()
+    {
+		currentIncrement = 0;
+		BodyWidth = 1;
+		Body.width = 1;
+		Extremity.x = Body.x + 1;
+    }
+	
 	// t = Current time in seconds (since start?).
     // b = Starting value.
     // c = Final value.

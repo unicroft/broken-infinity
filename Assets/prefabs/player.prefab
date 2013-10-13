@@ -153,7 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Columns: 4
   Rows: 4
-  FramesPerSecond: 0
+  FramesPerSecond: 10
   RunOnce: 0
   IsPaused: 1
   hasPlayed: 0

@@ -12,7 +12,8 @@ public abstract class GameState
 		InfinityState = 3,
 		PauseState = 4,
 		EndState = 5,
-		GameOverState = 6
+		GameOverState = 6,
+		ChangeTerrainState =7
 	}
 	
 	protected State mCurrentState;

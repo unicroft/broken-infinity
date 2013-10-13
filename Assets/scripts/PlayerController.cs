@@ -33,8 +33,8 @@ public class PlayerController : BaseGame
 	public int joystick_id = 1;
 	public float gravity = 500;
     public float speed = 150;
-    public float acceleration = 500;
-	public float jumpHeight = 300;
+    public float acceleration = 700;
+	public float jumpHeight = 800;
 	
     private float currentSpeed;
     private float targetSpeed;
@@ -56,26 +56,8 @@ public class PlayerController : BaseGame
 		anim.RunOnce = false;
 		
 	}
-	
-    void OnCollisionEnter(Collision collision)
-    {
-//        BackgroundTranslate ground = collision.gameObject.GetComponent<BackgroundTranslate>();
-        
-        //if (ground != null)
-        //{
-            // mIsOnGround = true;
-        //}
-    }
 
-    void OnCollisionExit(Collision collision)
-    {
-  //      BackgroundTranslate ground = collision.gameObject.GetComponent<BackgroundTranslate>();
-
-        //if (ground != null)
-        //{
-            // mIsOnGround = false;
-        //}
-    }
+    
 
     protected override void OnStart()
     {
@@ -120,20 +102,26 @@ public class PlayerController : BaseGame
     void OnGUI()
 	{
     }
-
+	
+	
+	Vector3 forceJump;
+	float jumpRemaining = 0;
+	bool ground = false;
 
     void FixedUpdate()
     {
+		jumpRemaining -= Time.fixedDeltaTime;
 		targetSpeed = XCI.GetAxisRaw(XboxAxis.LeftStickX, joystick_id) * speed;
         currentSpeed = IncrementTowards(currentSpeed, targetSpeed, acceleration);
 		
-		if(rigidbody.velocity.magnitude > 1)
+		if(rigidbody.velocity.magnitude > 5)
 		{
-			anim.IsPaused = false;
 			anim.FramesPerSecond = Mathf.Sqrt(rigidbody.velocity.magnitude);
 		}
 		else
-			anim.IsPaused = true;
+		{
+			;	
+		}
 		
 		float axis = 0;
 		if(Input.GetKey(KeyCode.RightArrow))
@@ -144,57 +132,35 @@ public class PlayerController : BaseGame
 		{
 			axis = -1.0f;
 		}
+		
 		axis = XCI.GetAxisRaw(XboxAxis.LeftStickX, joystick_id);
 
 		RaycastHit hit = new RaycastHit();
 
 		var castPos = new Vector3(transform.position.x,transform.position.y-0.25f,transform.position.z);
 		Debug.DrawRay(castPos,-Vector3.up*40, Color.red);
+		rigidbody.AddForce(gameObject.transform.right.normalized * axis * speed/10);
 		if (Physics.Raycast (castPos, -Vector3.up,out hit) && hit.distance < 40) {
 			
 			
 			transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
 			
-    		rigidbody.AddForce(gameObject.transform.right.normalized * axis * speed);
-			//if(XCI.GetButton(XboxButton.A, joystick_id))
-			if((Input.GetKey(KeyCode.Space))||((XCI.GetButton(XboxButton.A, joystick_id))))
-			{
-				rigidbody.AddForce((axis*transform.right/3+transform.up).normalized * jumpHeight);
-			}
-    		rigidbody.AddForce(gameObject.transform.right.normalized * axis * speed);
+    		rigidbody.AddForce(gameObject.transform.right.normalized * axis * 1.5f * speed);
 			
 
 		}
-		else
-		{
-			//transform.rotation = Quaternion.FromToRotation (Vector3.up, Vector3.up);
-		}
 		
-		if (playerPhysics.grounded) {
-			if (!XCI.GetButton(XboxButton.A, joystick_id)) {
-				jumpKeyReleased = true;
-			}
-			
-			amountToMove.y = 0;
-			if (XCI.GetButton(XboxButton.A, joystick_id) && jumpKeyReleased) {
-				amountToMove.y = jumpHeight;
-				falling = false;
-				jumpKeyReleased = false;
-			}
-		} // en l'air
-		else {
-			if (!falling) {
-				if (!XCI.GetButton(XboxButton.A, joystick_id)) {
-					falling = true;
-					amountToMove.y = 0;
+		if((Input.GetKey(KeyCode.Space))||((XCI.GetButton(XboxButton.A, joystick_id))))
+			{
+				if(ground){
+				forceJump = (axis*transform.right/5+transform.up).normalized * jumpHeight * 15;
+				jumpRemaining = 1;
+				rigidbody.AddForce(forceJump);
 				}
-			}	
-		}
-		
-		amountToMove.x = currentSpeed;
-		amountToMove.y -= gravity * Time.deltaTime;
-		if (amountToMove.y < 0) { falling = true; }
-		//playerPhysics.Move(amountToMove * Time.deltaTime);
+
+				
+			}
+
     }
 
     private float IncrementTowards(float n, float target, float a) {
@@ -234,5 +200,36 @@ public class PlayerController : BaseGame
         }
 
         return null;
+    }
+	
+	void OnCollisionEnter(Collision collision) {
+		
+       Debug.Log ("Enter: " + collision.relativeVelocity.magnitude);
+        if (collision.relativeVelocity.magnitude > 10 && collision.gameObject.name != "generatedobjective")
+					{
+           	MasterAudio.PlaySound("Land",transform,"land",true,0f);
+					forceJump = new Vector3(0,0,0);
+						jumpRemaining = 0;
+			ground = true;
+					}
+        
+    }
+	
+	void OnCollisionExit(Collision collision)
+    {
+		Debug.Log ("Exit: " + collision.relativeVelocity.magnitude );
+		if (collision.relativeVelocity.magnitude > 10 && collision.gameObject.name != "generatedobjective"){
+           	MasterAudio.PlaySound("Jump",transform,"jump",true,0f);
+			ground = false;	
+		}
+    }
+	
+	void OnCollisionStay(Collision collision)
+    {
+		/*
+		Debug.Log (collision.relativeVelocity.magnitude);
+		if (collision.relativeVelocity.magnitude > 10 && collision.gameObject.name != "generatedobjective")
+           	MasterAudio.PlaySound("Walk",transform,"Walk",true,0f);
+        //*/
     }
 }
