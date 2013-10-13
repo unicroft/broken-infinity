@@ -32,7 +32,6 @@ public class Terrain
 		int prevFromKeyPointI = _fromKeyPointI;
 		int prevToKeyPointI = _toKeyPointI;
 		
-		
 		_fromKeyPointI = prevToKeyPointI;
 		_toKeyPointI = _fromKeyPointI;
 		
