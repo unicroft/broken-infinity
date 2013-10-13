@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent (typeof(BoxCollider))]
 
 public class PlayerPhysics : MonoBehaviour {
 	
 	public LayerMask collisionMask;
 	
-	private BoxCollider collider;
+	private Collider collider;
 	private Vector3 size;
     private Vector3 center;
 	private float skin = .005f;
@@ -22,7 +21,7 @@ public class PlayerPhysics : MonoBehaviour {
 	public void Start() {
 		collider = GetComponent<BoxCollider>();
 		size = this.renderer.bounds.size;
-		center = collider.center;
+		//center = collider.center;
 	}
 	
 	public void Move(Vector2 moveAmount) {

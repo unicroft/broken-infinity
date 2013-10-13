@@ -3,28 +3,33 @@ using System.Collections;
 
 public class PauseState :  GameState  
 {
-    public PauseState()
+	
+	private GameState _gs;
+	
+    public PauseState(GameState gs)
     {
         mCurrentState = State.PauseState;
+		_gs = gs;
     }
 
     public override void EnterState()
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public override void UpdateState()
     {
-        throw new System.NotImplementedException();
+       
     }
 
     public override void UpdateStateGUI()
     {
-        throw new System.NotImplementedException();
+        if(GUI.Button(new Rect(120,0,100,50),"Resume"))
+			GameStateManager.Instance.SwitchState(_gs);
     }
 
     public override void ExitState()
     {
-        throw new System.NotImplementedException();
+        
     }
 }

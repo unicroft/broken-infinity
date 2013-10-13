@@ -12,8 +12,8 @@ public class ObjectiveTrigger : MonoBehaviour {
 	
 	void OnTriggerEnter(Collider coll)
 	{
-		Debug.Log("Player collision with objective");
 		gsm.ObjectiveDestroyed();
 		gameObject.GetComponent<MeshRenderer>().enabled = false;
+		gameObject.GetComponent<BoxCollider>().enabled = false;
 	}
 }
