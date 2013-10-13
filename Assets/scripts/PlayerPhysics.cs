@@ -28,7 +28,7 @@ public class PlayerPhysics : MonoBehaviour {
 	public void Move(Vector2 moveAmount) {
 		float deltaX = moveAmount.x;
 		float deltaY = moveAmount.y;
-		Vector2 p = transform.position;
+		Vector2 p = gameObject.transform.position;
 		
 		grounded = false;
 		for (int i = 0; i < 3; i++) {

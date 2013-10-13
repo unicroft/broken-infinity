@@ -21,7 +21,7 @@ public class CameraController : MonoBehaviour {
 	}
 	
 	private bool _pinnedToTop = false;
-	//private PlayerController _playerController;
+	private PlayerController _playerController;
 	
 
 	// Use this for initialization
@@ -32,13 +32,20 @@ public class CameraController : MonoBehaviour {
 		_maxOrthographicSize = _preferredOrthographicSize * 2;
 		_camera.orthographicSize = _preferredOrthographicSize;
 		
-		//_playerController = player.GetComponent<PlayerController>();
+		_playerController = player.GetComponent<PlayerController>();
 		
 		
 	}
 	
 	// Update is called once per frame
-	void LateUpdate () {	
-		_transform.Translate(new Vector3(10,0,0));
+	void LateUpdate () {
+		
+		Vector2 playerpos = (Vector2)player.position;
+		Vector2 camerapos = (Vector2)_transform.position;
+		
+		if(Vector3.Distance(playerpos,camerapos) > 50)
+		{
+			_transform.Translate((Vector3)((playerpos-camerapos) * Time.deltaTime));
+		}
 	}
 }
