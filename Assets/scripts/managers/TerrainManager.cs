@@ -37,6 +37,7 @@ public class TerrainManager : MonoBehaviour {
 		//terrain setup
 		terrainGenerator = new TerrainGenerator(_camera);
 		ResetTerrain();
+		ChangeTerrainColor(new Color(Random.value/2+0.5f,Random.value/2+0.5f,Random.value/2+0.5f,1.0f));
 		
 		for(var i = 0; i <= 1; i++)
 		{
@@ -92,8 +93,12 @@ public class TerrainManager : MonoBehaviour {
 				lgo.Clear ();
 			}
 		}
-		
-		
+	}
+	
+	public void ChangeTerrainColor(Color color)
+	{
+		terrainMaterialBorder.color = color;
+		terrainMaterialInside.color = color;
 	}
 	
 	// Update is called once per frame

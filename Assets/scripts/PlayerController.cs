@@ -53,6 +53,7 @@ public class PlayerController : BaseGame
 		rigidbody = gameObject.GetComponent<Rigidbody>();
 		playerPhysics = GetComponent<PlayerPhysics>();	
 		anim = GetComponentInChildren<SpriteAnimator>();
+		anim.RunOnce = false;
 		
 	}
 	
@@ -126,10 +127,13 @@ public class PlayerController : BaseGame
 		targetSpeed = XCI.GetAxisRaw(XboxAxis.LeftStickX, joystick_id) * speed;
         currentSpeed = IncrementTowards(currentSpeed, targetSpeed, acceleration);
 		
-		if(rigidbody.velocity.magnitude > 10)
-			anim.mFramesPerSecond = rigidbody.velocity.magnitude/5;
+		if(rigidbody.velocity.magnitude > 1)
+		{
+			anim.IsPaused = false;
+			anim.FramesPerSecond = Mathf.Sqrt(rigidbody.velocity.magnitude);
+		}
 		else
-			anim.mFramesPerSecond = 0.01f;
+			anim.IsPaused = true;
 		
 		float axis = 0;
 		if(Input.GetKey(KeyCode.RightArrow))
@@ -145,8 +149,8 @@ public class PlayerController : BaseGame
 		RaycastHit hit = new RaycastHit();
 
 		var castPos = new Vector3(transform.position.x,transform.position.y-0.25f,transform.position.z);
-		
-		if (Physics.Raycast (castPos, -Vector3.up,out hit) && hit.distance < 55) {
+		Debug.DrawRay(castPos,-Vector3.up*40, Color.red);
+		if (Physics.Raycast (castPos, -Vector3.up,out hit) && hit.distance < 40) {
 			
 			
 			transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
