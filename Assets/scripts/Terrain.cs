@@ -26,12 +26,11 @@ public class Terrain
 		terrainGenerator = mterrainGenerator;	
 	}
 	
-	public void generateMeshWithWidth(float width, MeshFilter meshFilter, MeshFilter[] underGroundFilter) {
+	public void generateMeshWithWidth(float width, MeshFilter meshFilter, MeshFilter[] underGroundFilter, List<GameObject> objs) {
 		//terrainGenerator.resetToLastUsedIndex( _toKeyPointI);
 		
 		int prevFromKeyPointI = _fromKeyPointI;
 		int prevToKeyPointI = _toKeyPointI;
-		
 		
 		_fromKeyPointI = prevToKeyPointI;
 		_toKeyPointI = _fromKeyPointI;
@@ -45,11 +44,11 @@ public class Terrain
 		while( terrainGenerator[++_toKeyPointI].x < width) {}
 		
 		var start = DateTime.Now;
-		drawMesh(meshFilter, underGroundFilter);
+		drawMesh(meshFilter, underGroundFilter, objs);
 		Debug.Log(DateTime.Now - start);
 	}
 	
-	private void drawMesh(MeshFilter meshFilter, MeshFilter[] underGroundFilter)
+	private void drawMesh(MeshFilter meshFilter, MeshFilter[] underGroundFilter, List<GameObject> objs)
 	{
 		borderVertices.Clear();
 		
@@ -67,6 +66,15 @@ public class Terrain
 			terrainVerticesUnderground[q] = new List<Vector3>();
 		}
 		
+		GameObject original = GameObject.Find("Objective");
+		
+		foreach(GameObject go in objs)
+		{
+			GameObject.Destroy(go);	
+		}
+		
+		objs.Clear ();
+		
 		Vector3 keyPoint0, keyPoint1, pt0, pt1 = new Vector3(0 ,0 ,terrainGenerator.zPositionOfTerrain);
 		keyPoint0 = terrainGenerator[_fromKeyPointI];
 		
@@ -78,11 +86,20 @@ public class Terrain
 			float segmentWidth = ( keyPoint1.x - keyPoint0.x) / totalSegments;
 			float da = Mathf.PI / totalSegments;
 			float ymid = ( keyPoint0.y + keyPoint1.y ) / 2;
+			float xmid = ( keyPoint0.x + keyPoint1.x ) / 2;
 			float amplitude  = (keyPoint0.y - keyPoint1.y ) / 2;
 			pt0 = keyPoint0;
 			
 			if ( i == _toKeyPointI)
 				totalSegments++;
+			
+			if(i % 5 == 2 || i % 3 == 2)
+			{
+				GameObject go = GameObject.Instantiate(original) as GameObject;
+				go.transform.Translate(new Vector3(-xmid,-ymid - 70,0));
+				go.name = "generatedObjective";
+				objs.Add (go);
+			}
 			
 			for (var j = 0; j <= totalSegments; j++)
 			{
@@ -147,9 +164,10 @@ public class Terrain
 	
 	private void addMeshCollider( MeshFilter meshFilter, List<Vector3> borderVerts) 
 	{
-		borderVerts.Insert( 0, new Vector3( borderVerts[0].x, borderVerts[0].y - textureSize + terrainGenerator.deltaIncline, borderVerts[0].z ) );
+		borderVerts.Insert( 0, new Vector3( borderVerts[0].x, borderVerts[0].y - 2* textureSize + terrainGenerator.deltaIncline, borderVerts[0].z ) );
 		borderVerts.Add ( new Vector3( borderVerts[borderVerts.Count - 1].x, 
-			borderVerts[borderVerts.Count - 1].y - textureSize + terrainGenerator.deltaIncline, borderVerts[borderVerts.Count - 1].z ) );
+			borderVerts[borderVerts.Count - 1].y - 2*textureSize + terrainGenerator.deltaIncline, 
+			borderVerts[borderVerts.Count - 1].z ) );
 		
 		List<Vector3> verticesList = new List<Vector3>(borderVerts);
 		List<int> indices = new List<int>();
