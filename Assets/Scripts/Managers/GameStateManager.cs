@@ -69,16 +69,21 @@ public class GameStateManager : MonoBehaviour
 	{
 		Debug.Log("Objcetive augmented");
 		taken++;
+		GameObject.Find("StarBar").GetComponent<ProgressBar>().addOneIncrement();
 	}
 	
 	public void resetObjective()
 	{
+		GameObject.Find("StarBar").GetComponent<ProgressBar>().reset();
 		taken = 0;	
 	}
 	
 	public void SwitchState(GameState pNewState)
     {
-		Debug.Log("CHANGE STATE");
-        nextState = pNewState;
+		
+		
+        	nextState = pNewState;
+			Debug.Log("CHANGE STATE");
+		
     }
 }

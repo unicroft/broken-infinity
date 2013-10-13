@@ -78,6 +78,7 @@ public class TerrainManager : MonoBehaviour {
 	
 	public void ResetTerrain()
 	{
+			
 		_terrain = new Terrain( gameObject, terrainGenerator);
 		_terrain.textureSize = terrainMaterialBorder.mainTexture.height;
 		_meshMaxX = 0;
@@ -101,6 +102,27 @@ public class TerrainManager : MonoBehaviour {
 		terrainMaterialInside.color = color;
 	}
 	
+	public void changeWorld()
+	{
+		foreach(GameObject go in _terrainGameObjects)
+		{
+			go.GetComponent<MeshCollider>().enabled = false;
+			go.GetComponent<MeshRenderer>().enabled = false;
+		}
+		
+		foreach(GameObject[] goa in _undergroundGameObjects)
+		{
+			foreach(GameObject go in goa)
+			{
+				go.GetComponent<MeshRenderer>().enabled = false;	
+			}
+		}
+		
+		terrainGenerator = new TerrainGenerator(_camera);
+		ResetTerrain();
+		ChangeTerrainColor(new Color(Random.value/2+0.5f,Random.value/2+0.5f,Random.value/2+0.5f,1.0f));
+	}
+	
 	// Update is called once per frame
 	void Update () {
 		var cameraMaxX = _cameraTransform.position.x + _camera.orthographicSize * 2;
@@ -109,6 +131,14 @@ public class TerrainManager : MonoBehaviour {
 		{
 			_currentTerrainGameObjectIndex = (_currentTerrainGameObjectIndex+1)%2;
 			var go = _terrainGameObjects[_currentTerrainGameObjectIndex];
+			
+			go.GetComponent<MeshCollider>().enabled = true;
+			go.GetComponent<MeshRenderer>().enabled = true;
+			
+			foreach(GameObject gob in _undergroundGameObjects[_currentTerrainGameObjectIndex])
+			{
+				gob.GetComponent<MeshRenderer>().enabled = true;	
+			}
 			
 			_meshMaxX += 3500;
 			_meshMinX = cameraMinX;

@@ -9,7 +9,7 @@ public class VersusState :  GameState
 	float timeremaining;
 	int currentplayer = 0;
 	
-	public int nbObjective = 5;
+	public int nbObjective = 1;
 	
 	float[] result = new float[2];
 	
@@ -91,11 +91,11 @@ public class VersusState :  GameState
 				{
 					started = false;
 					timeremaining = 3;
-					
 				}
 				else
 				{
-					ended = true;	
+					ended = true;
+					GameStateManager.Instance.SwitchState(new ChangeTerrainState(result));
 				}
 			}
 		}
