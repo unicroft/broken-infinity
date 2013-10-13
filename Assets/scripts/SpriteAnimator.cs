@@ -42,13 +42,20 @@ public class SpriteAnimator : MonoBehaviour
         {
             if (!mIsPaused)
             {
-                mIndex++;
+				if (mFramesPerSecond < 0)
+				{
+                	mIndex--;
+					mFramesPerSecond *= -1;
+				}
+				else
+					mIndex++;
 
                 if (mIndex >= (mRows * mColumns))
                 {
                     mIndex = 0;
                 }
-
+				else if (mIndex < 0)
+					mIndex = (mRows * mColumns) - 1;
                 if (mIsRestartFrame)
                 {
                     if (mIndex == mAtFrame)
@@ -77,8 +84,14 @@ public class SpriteAnimator : MonoBehaviour
 
                 renderer.sharedMaterial.SetTextureOffset("_MainTex", offset);
             }
-
-            yield return new WaitForSeconds(1.0f / mFramesPerSecond);
-        }
-    }
+			
+			if (mFramesPerSecond != 0)
+			{
+				
+            		yield return new WaitForSeconds(1.0f / mFramesPerSecond);
+			}
+			else
+				yield break;
+		}
+    }		
 }
