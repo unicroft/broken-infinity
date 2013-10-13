@@ -8,7 +8,7 @@ public class GameOverState :  GameState
         mCurrentState = State.GameOverState;
     }
 
-    protected override void EnterState()
+    public override void EnterState()
     {
         throw new System.NotImplementedException();
     }
@@ -23,7 +23,7 @@ public class GameOverState :  GameState
         throw new System.NotImplementedException();
     }
 
-    protected override void ExitState()
+    public override void ExitState()
     {
         throw new System.NotImplementedException();
     }

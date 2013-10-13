@@ -96,7 +96,7 @@ public class Terrain
 			if(i % 5 == 2 || i % 3 == 2)
 			{
 				GameObject go = GameObject.Instantiate(original) as GameObject;
-				go.transform.Translate(new Vector3(-xmid,-ymid - 70,0));
+				go.transform.Translate(new Vector3(-xmid-1000,-ymid - 70,0));
 				go.name = "generatedObjective";
 				objs.Add (go);
 			}

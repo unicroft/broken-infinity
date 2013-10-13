@@ -41,7 +41,7 @@ public class CameraController : MonoBehaviour {
 	void LateUpdate () {
 		
 		Vector2 playerpos = (Vector2)player.position;
-		Vector2 camerapos = (Vector2)_transform.position - new Vector2(50,0);
+		Vector2 camerapos = (Vector2)_transform.position + new Vector2(-150,-100);
 		float distance = Vector2.Distance(playerpos,camerapos);
 		
 		if(distance > 50)

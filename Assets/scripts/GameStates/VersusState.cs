@@ -3,14 +3,19 @@ using System.Collections;
 
 public class VersusState :  GameState  
 {
+ 	bool started = false;
+	
     public VersusState()
     {
         mCurrentState = State.VersusState;
     }
 
-    protected override void EnterState()
+    public override void EnterState()
     {
-        throw new System.NotImplementedException();
+        GameObject go = new GameObject();
+		go.AddComponent<MeshFilter>();
+		
+		var mesh = go.AddComponent<MeshRenderer>();
     }
 
     public override void UpdateState()
@@ -23,7 +28,7 @@ public class VersusState :  GameState
         throw new System.NotImplementedException();
     }
 
-    protected override void ExitState()
+    public override void ExitState()
     {
         throw new System.NotImplementedException();
     }

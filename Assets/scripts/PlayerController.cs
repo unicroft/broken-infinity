@@ -34,9 +34,9 @@ public class PlayerController : BaseGame
     // player handling
 	public int joystick_id = 1;
 	public float gravity = 500;
-    public float speed = 250;
+    public float speed = 150;
     public float acceleration = 500;
-	public float jumpHeight = 500;
+	public float jumpHeight = 300;
 	
     private float currentSpeed;
     private float targetSpeed;
@@ -143,7 +143,7 @@ public class PlayerController : BaseGame
 
 		var castPos = new Vector3(transform.position.x,transform.position.y-0.25f,transform.position.z);
 		
-		if (Physics.Raycast (castPos, -Vector3.up,out hit) && hit.distance < 40) {
+		if (Physics.Raycast (castPos, -Vector3.up,out hit) && hit.distance < 55) {
 			
 			
 			transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
@@ -154,6 +154,8 @@ public class PlayerController : BaseGame
 			{
 				rigidbody.AddForce((rigidbody.velocity + new Vector3(0,1,0)).normalized * jumpHeight);
 			}
+    		rigidbody.AddForce(gameObject.transform.right.normalized * axis * speed);
+			
 
 		}
 		else

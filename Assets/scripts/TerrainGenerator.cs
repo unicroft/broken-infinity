@@ -26,12 +26,13 @@ public class TerrainGenerator : IEnumerable<Vector3>
 	{
 		_internalEnumerator = this.GetEnumerator();
 		
+		deltaIncline = Random.Range(-10,10);
 		minHeight = -150;
 		maxHeight = cam.orthographicSize - 100;
-		minDeltaX = cam.orthographicSize;
-		minDeltaY = cam.orthographicSize / 4;
-		rangeDeltaX = cam.orthographicSize;
-		rangeDeltaY = cam.orthographicSize / 2;
+		minDeltaX = Random.Range (cam.orthographicSize,cam.orthographicSize*3/2);
+		minDeltaY = Random.Range (cam.orthographicSize / 8, cam.orthographicSize/ 2);
+		rangeDeltaX = Random.Range (cam.orthographicSize/4,cam.orthographicSize/2);
+		rangeDeltaY = Random.Range (cam.orthographicSize / 8,cam.orthographicSize/4);
 	}
 	
 	public Vector3 this[int index]
@@ -80,7 +81,6 @@ public class TerrainGenerator : IEnumerable<Vector3>
 		
 		while( true )
 		{
-			Debug.Log("Delta Incline" + deltaIncline);
 			dx = Random.Range ( minDeltaX, rangeDeltaX + minDeltaX);
 			x += dx;
 			
