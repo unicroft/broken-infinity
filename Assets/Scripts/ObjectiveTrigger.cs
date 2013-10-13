@@ -12,8 +12,13 @@ public class ObjectiveTrigger : MonoBehaviour {
 	
 	void OnTriggerEnter(Collider coll)
 	{
-		gsm.ObjectiveDestroyed();
-		gameObject.GetComponent<MeshRenderer>().enabled = false;
-		gameObject.GetComponent<BoxCollider>().enabled = false;
+		if(coll.gameObject.name == "player")
+		{
+			gsm.ObjectiveDestroyed();
+			gameObject.GetComponent<MeshRenderer>().enabled = false;
+			gameObject.GetComponent<BoxCollider>().enabled = false;
+			MasterAudio.PlaySound("Powerup",coll.gameObject.transform,"powerup",true,0f);
+		}
+		
 	}
 }

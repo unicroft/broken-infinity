@@ -11,6 +11,7 @@ GameObject:
   - 33: {fileID: 3300000}
   - 65: {fileID: 6500000}
   - 23: {fileID: 2300000}
+  - 114: {fileID: 11400000}
   m_Layer: 0
   m_Name: Objective
   m_TagString: Untagged
@@ -66,6 +67,139 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 746100652, guid: bda4da4bccca8274594c85f737c87cb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundSpawnMode: 1
+  disableSounds: 0
+  visibleSound:
+    soundType: 
+    volume: 1
+    emitParticles: 0
+    particleCountToEmit: 1
+    useLayerFilter: 0
+    useTagFilter: 0
+    delaySound: 0
+    matchingLayers: 00000000
+    matchingTags:
+    - Default
+  invisibleSound:
+    soundType: 
+    volume: 1
+    emitParticles: 0
+    particleCountToEmit: 1
+    useLayerFilter: 0
+    useTagFilter: 0
+    delaySound: 0
+    matchingLayers: 00000000
+    matchingTags:
+    - Default
+  collisionSound:
+    soundType: 
+    volume: 1
+    emitParticles: 0
+    particleCountToEmit: 1
+    useLayerFilter: 0
+    useTagFilter: 0
+    delaySound: 0
+    matchingLayers: 00000000
+    matchingTags:
+    - Default
+  triggerSound:
+    soundType: 
+    volume: 1
+    emitParticles: 0
+    particleCountToEmit: 1
+    useLayerFilter: 0
+    useTagFilter: 0
+    delaySound: 0
+    matchingLayers: 00000000
+    matchingTags:
+    - Default
+  mouseEnterSound:
+    soundType: 
+    volume: 1
+    emitParticles: 0
+    particleCountToEmit: 1
+    useLayerFilter: 0
+    useTagFilter: 0
+    delaySound: 0
+    matchingLayers: 00000000
+    matchingTags:
+    - Default
+  mouseClickSound:
+    soundType: 
+    volume: 1
+    emitParticles: 0
+    particleCountToEmit: 1
+    useLayerFilter: 0
+    useTagFilter: 0
+    delaySound: 0
+    matchingLayers: 00000000
+    matchingTags:
+    - Default
+  spawnedSound:
+    soundType: 
+    volume: 1
+    emitParticles: 0
+    particleCountToEmit: 1
+    useLayerFilter: 0
+    useTagFilter: 0
+    delaySound: 0
+    matchingLayers: 00000000
+    matchingTags:
+    - Default
+  despawnedSound:
+    soundType: 
+    volume: 1
+    emitParticles: 0
+    particleCountToEmit: 1
+    useLayerFilter: 0
+    useTagFilter: 0
+    delaySound: 0
+    matchingLayers: 00000000
+    matchingTags:
+    - Default
+  enableSound:
+    soundType: 
+    volume: 1
+    emitParticles: 0
+    particleCountToEmit: 1
+    useLayerFilter: 0
+    useTagFilter: 0
+    delaySound: 0
+    matchingLayers: 00000000
+    matchingTags:
+    - Default
+  disableSound:
+    soundType: 
+    volume: 1
+    emitParticles: 0
+    particleCountToEmit: 1
+    useLayerFilter: 0
+    useTagFilter: 0
+    delaySound: 0
+    matchingLayers: 00000000
+    matchingTags:
+    - Default
+  useVisibleSound: 0
+  useInvisibleSound: 0
+  useCollisionSound: 0
+  useTriggerSound: 0
+  useMouseEnterSound: 0
+  useMouseClickSound: 0
+  useSpawnedSound: 0
+  useDespawnedSound: 0
+  useEnableSound: 0
+  useDisableSound: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

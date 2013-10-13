@@ -45,7 +45,7 @@ public class Terrain
 		
 		var start = DateTime.Now;
 		drawMesh(meshFilter, underGroundFilter, objs);
-		Debug.Log(DateTime.Now - start);
+		//Debug.Log(DateTime.Now - start);
 	}
 	
 	private void drawMesh(MeshFilter meshFilter, MeshFilter[] underGroundFilter, List<GameObject> objs)
@@ -97,6 +97,8 @@ public class Terrain
 			{
 				GameObject go = GameObject.Instantiate(original) as GameObject;
 				go.transform.Translate(new Vector3(-xmid-1000,-ymid - 70,0));
+				go.GetComponent<MeshRenderer>().enabled = true;
+				go.GetComponent<BoxCollider>().enabled = true;
 				go.name = "generatedObjective";
 				objs.Add (go);
 			}

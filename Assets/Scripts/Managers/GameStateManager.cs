@@ -13,19 +13,18 @@ public class GameStateManager : MonoBehaviour
 
     public int GameSequenceIndex;
 	
-	public int taken;
+	public int taken { get; private set;}
 	private DateTime startTime;
 
     public static GameStateManager Instance
     {
         get { return mInstance; }
-        set { mInstance = value; }
     }
     
-    public GameState GameState
+    public GameState gameState
     {
         get { return mGameState; }
-        set { mGameState = value; }
+        set { SwitchState( value); }
     }
   
     void Awake()
@@ -48,13 +47,12 @@ public class GameStateManager : MonoBehaviour
     void OnGUI()
     {
        	mGameState.UpdateStateGUI();
-		
     }
 
 	// Update is called once per frame
 	void Update ()
 	{
-		if(nextState!=null)
+		if(nextState != null)
 		{
 			mGameState.ExitState();
 
@@ -69,11 +67,18 @@ public class GameStateManager : MonoBehaviour
 	
 	public void ObjectiveDestroyed()
 	{
+		Debug.Log("Objcetive augmented");
 		taken++;
+	}
+	
+	public void resetObjective()
+	{
+		taken = 0;	
 	}
 	
 	public void SwitchState(GameState pNewState)
     {
+		Debug.Log("CHANGE STATE");
         nextState = pNewState;
     }
 }
