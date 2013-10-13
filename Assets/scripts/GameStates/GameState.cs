@@ -30,40 +30,10 @@ public abstract class GameState
     {
     }
 
-    protected abstract void EnterState();
+    public abstract void EnterState();
     public abstract void UpdateState();
     public abstract void UpdateStateGUI();
-    protected abstract void ExitState();
+    public abstract void ExitState();
 
-    public void SwitchState(GameState.State pNewState)
-    {
-        ExitState();
-
-        switch (pNewState)
-        {
-            case State.MainMenu:
-                GameStateManager.Instance.GameState = new MainMenu();
-                break;
-            case State.IntroState:
-                GameStateManager.Instance.GameState = new IntroState();
-                break;
-            case State.VersusState:
-                GameStateManager.Instance.GameState = new VersusState();
-                break;
-            case State.InfinityState:
-                GameStateManager.Instance.GameState = new InfinityState();
-                break;
-            case State.PauseState:
-                GameStateManager.Instance.GameState = new PauseState();
-                break;
-            case State.EndState:
-                GameStateManager.Instance.GameState = new EndState();
-                break;
-			case State.GameOverState:
-                GameStateManager.Instance.GameState = new GameOverState();
-                break;
-        }
-
-        EnterState();
-    }
+    
 }
