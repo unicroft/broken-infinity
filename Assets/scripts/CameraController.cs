@@ -46,7 +46,7 @@ public class CameraController : MonoBehaviour {
 		
 		if(distance > 50)
 		{
-			_transform.Translate((Vector3)((playerpos-camerapos) * Time.deltaTime ));
+			_transform.Translate((Vector3)((playerpos-camerapos) * Time.deltaTime * 2));
 		}
 	}
 }

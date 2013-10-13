@@ -94,7 +94,7 @@ public class TerrainManager : MonoBehaviour {
 			
 			_terrain.generateMeshWithWidth( _meshMaxX, go.GetComponent<MeshFilter>() , _undergroundMeshFilter[_currentTerrainGameObjectIndex], _objs[_currentTerrainGameObjectIndex]);
 		}
-		//*
+		/*
 		else if( cameraMinX < _meshMinX)
 		{
 			_currentTerrainGameObjectIndex = (_currentTerrainGameObjectIndex+1)%2;

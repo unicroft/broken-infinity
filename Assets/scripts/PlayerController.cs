@@ -34,9 +34,9 @@ public class PlayerController : BaseGame
     // player handling
 	public int joystick_id = 1;
 	public float gravity = 500;
-    public float speed = 150;
+    public float speed = 250;
     public float acceleration = 500;
-	public float jumpHeight = 250;
+	public float jumpHeight = 500;
 	
     private float currentSpeed;
     private float targetSpeed;
@@ -128,26 +128,25 @@ public class PlayerController : BaseGame
 		
 		float axis = XCI.GetAxisRaw(XboxAxis.LeftStickX, joystick_id);
 		
-		rigidbody.AddForce(gameObject.transform.right * axis * speed);
-		
 		RaycastHit hit = new RaycastHit();
 
 		var castPos = new Vector3(transform.position.x,transform.position.y-0.25f,transform.position.z);
 		
-		if (Physics.Raycast (castPos, -transform.up,out hit)) {
-		
-			if(hit.distance < 70)
+		if (Physics.Raycast (castPos, -Vector3.up,out hit) && hit.distance < 40) {
+			
+			
+			transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
+			
+    		rigidbody.AddForce(gameObject.transform.right.normalized * axis * speed);
+			if(XCI.GetButton(XboxButton.A, joystick_id))
 			{
-				transform.rotation = Quaternion.FromToRotation (Vector3.up, hit.normal);
-				
-				
-				if(hit.distance < 20)
-		    		rigidbody.AddForce(gameObject.transform.right * axis * speed);
+				rigidbody.AddForce((rigidbody.velocity + gameObject.transform.up).normalized * jumpHeight);
 			}
+
 		}
 		else
 		{
-			transform.rotation = Quaternion.FromToRotation (transform.up, Vector3.up);
+			//transform.rotation = Quaternion.FromToRotation (Vector3.up, Vector3.up);
 		}
 		
 		if (playerPhysics.grounded) {

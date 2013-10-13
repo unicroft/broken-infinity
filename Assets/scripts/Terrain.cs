@@ -164,9 +164,10 @@ public class Terrain
 	
 	private void addMeshCollider( MeshFilter meshFilter, List<Vector3> borderVerts) 
 	{
-		borderVerts.Insert( 0, new Vector3( borderVerts[0].x, borderVerts[0].y - textureSize + terrainGenerator.deltaIncline, borderVerts[0].z ) );
+		borderVerts.Insert( 0, new Vector3( borderVerts[0].x, borderVerts[0].y - 2* textureSize + terrainGenerator.deltaIncline, borderVerts[0].z ) );
 		borderVerts.Add ( new Vector3( borderVerts[borderVerts.Count - 1].x, 
-			borderVerts[borderVerts.Count - 1].y - textureSize + terrainGenerator.deltaIncline, borderVerts[borderVerts.Count - 1].z ) );
+			borderVerts[borderVerts.Count - 1].y - 2*textureSize + terrainGenerator.deltaIncline, 
+			borderVerts[borderVerts.Count - 1].z ) );
 		
 		List<Vector3> verticesList = new List<Vector3>(borderVerts);
 		List<int> indices = new List<int>();
