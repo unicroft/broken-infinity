@@ -48,6 +48,10 @@ public class PlayerController : BaseGame
 	private Rigidbody rigidbody;
 	private SpriteAnimator anim;
 	
+	private GameObject anima;
+	private GameObject idle;
+	private GameObject jump;
+	
 	void Awake(){
 		player = gameObject;
 		rigidbody = gameObject.GetComponent<Rigidbody>();
@@ -55,9 +59,21 @@ public class PlayerController : BaseGame
 		anim = GetComponentInChildren<SpriteAnimator>();
 		anim.RunOnce = false;
 		
+		anima = GameObject.Find("AnimatedCharacter");
+		idle = GameObject.Find ("character-idle");
+		jump = GameObject.Find ("character-jump");
+		
 	}
 
-    
+    private void setSprite(GameObject ob)
+	{
+		anima.GetComponent<MeshRenderer>().enabled = false;
+		idle.GetComponent<MeshRenderer>().enabled = false;
+		jump.GetComponent<MeshRenderer>().enabled = false;
+		
+		ob.GetComponent<MeshRenderer>().enabled = true;
+	
+	}
 
     protected override void OnStart()
     {
@@ -116,11 +132,13 @@ public class PlayerController : BaseGame
 		
 		if(rigidbody.velocity.magnitude > 5)
 		{
+			if(ground)
+				setSprite(anima);
 			anim.FramesPerSecond = Mathf.Sqrt(rigidbody.velocity.magnitude);
 		}
 		else
 		{
-			;	
+			setSprite (idle);
 		}
 		
 		float axis = 0;
@@ -153,9 +171,11 @@ public class PlayerController : BaseGame
 		if((Input.GetKey(KeyCode.Space))||((XCI.GetButton(XboxButton.A, joystick_id))))
 			{
 				if(ground){
-				forceJump = (axis*transform.right/5+transform.up).normalized * jumpHeight * 15;
-				jumpRemaining = 1;
-				rigidbody.AddForce(forceJump);
+					forceJump = (axis*transform.right/5+transform.up).normalized * jumpHeight * 15;
+					jumpRemaining = 1;
+					rigidbody.AddForce(forceJump);
+					jump.GetComponent<SpriteAnimator>().hasPlayed = false;
+					setSprite(jump);
 				}
 
 				

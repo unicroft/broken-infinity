@@ -38,7 +38,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0751cee3d6bac0544b107a52ebed35cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberOfIncrements: 10
+  numberOfIncrements: 9
   IncrementDelay: 1
   BaseTexture: {fileID: 2800000, guid: 029567879c9dc7b428e8b80e23ba3272, type: 3}
   ExtremityTexture: {fileID: 2800000, guid: 464435164666137428115f167294f983, type: 3}

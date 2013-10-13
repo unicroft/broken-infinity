@@ -9,23 +9,31 @@ public class VersusState :  GameState
 	float timeremaining;
 	int currentplayer = 0;
 	
-	public int nbObjective = 1;
+	public int nbObjective = 10;
 	
 	float[] result = new float[2];
 	
 	private GameObject _player;
 	private Vector3 savedVelocity;
 	
+	private GameObject s1;
+	private GameObject s2;
+	private GameObject s3;
+	
     public VersusState()
     {
         mCurrentState = State.VersusState;
 		_player = GameObject.Find("player");
+		
+		s1 = GameObject.Find("1");
+		s2 = GameObject.Find ("2");
+		s3 = GameObject.Find("3");
     }
 	
 	public VersusState(int startPlayer) :this()
 	{
 		currentplayer = startPlayer;
-		//_player.GetComponent<PlayerController>().joystick_id = currentplayer + 1;
+		_player.GetComponent<PlayerController>().joystick_id = currentplayer + 1;
 	}
 
     public override void EnterState()
@@ -36,6 +44,19 @@ public class VersusState :  GameState
 			_player.GetComponent<Rigidbody>().useGravity = false;
 			_player.GetComponentInChildren<SpriteAnimator>().IsPaused = true;
 			timeremaining = 3;
+			
+			s2.GetComponent<SpriteAnimator>().IsPaused = true;
+			s1.GetComponent<SpriteAnimator>().IsPaused = true;
+			
+			s3.GetComponent<SpriteAnimator>().hasPlayed = false;
+			s2.GetComponent<SpriteAnimator>().hasPlayed = false;
+			s1.GetComponent<SpriteAnimator>().hasPlayed = false;
+			
+			s3.GetComponent<MeshRenderer>().enabled = true;
+			s3.GetComponent<SpriteAnimator>().IsPaused = false;
+			
+			
+			
 		}
 		else if(!ended)
 		{
@@ -52,13 +73,35 @@ public class VersusState :  GameState
 		if(!started)
 		{
 	        timeremaining -= Time.deltaTime;
+			
 			if(timeremaining < 0)
 			{
 				_player.GetComponent<PlayerController>().enabled = true;
 				_player.GetComponent<Rigidbody>().useGravity = true;
 				_player.GetComponentInChildren<SpriteAnimator>().IsPaused = false;
 				MasterAudio.PlaySound("MonsterGrowl",_player.transform,"MonsterGrowl",true, 0f);
+				s1.GetComponent<MeshRenderer>().enabled = false;
 				started = true;
+			}
+			else if(timeremaining < 1)
+			{
+				s1.GetComponent<MeshRenderer>().enabled = true;
+				s2.GetComponent<MeshRenderer>().enabled = false;
+			
+
+			s2.GetComponent<SpriteAnimator>().hasPlayed = false;
+			s1.GetComponent<SpriteAnimator>().hasPlayed = false;
+				s1.GetComponent<SpriteAnimator>().IsPaused = false;
+			}
+			else if(timeremaining < 2)
+			{
+				s2.GetComponent<MeshRenderer>().enabled = true;
+				s3.GetComponent<MeshRenderer>().enabled = false;
+				
+
+			s2.GetComponent<SpriteAnimator>().hasPlayed = false;
+			s1.GetComponent<SpriteAnimator>().hasPlayed = false;
+				s2.GetComponent<SpriteAnimator>().IsPaused = false;
 			}
 		}
 		else if(!ended)
@@ -73,7 +116,7 @@ public class VersusState :  GameState
 				result[currentplayer] = timeremaining;
 				
 				currentplayer = (currentplayer+1)%2;
-				//_player.GetComponent<PlayerController>().joystick_id = currentplayer + 1;
+				_player.GetComponent<PlayerController>().joystick_id = currentplayer + 1;
 				
 				Camera.main.transform.position = new Vector3(0,1,-10);
 				
@@ -103,6 +146,7 @@ public class VersusState :  GameState
 
     public override void UpdateStateGUI()
     {
+		/*
 		GUI.Box (new Rect (0,0,100,50),"Power: " + GameStateManager.Instance.taken + "/" + nbObjective);
 		GUI.Box (new Rect (0,20,100,50),"Time: " + timeremaining);
 		GUI.Box (new Rect (0,40,100,50),"Player: " + currentplayer);
@@ -116,6 +160,7 @@ public class VersusState :  GameState
 		
 		if(GUI.Button(new Rect(120,0,100,50),"Pause"))
 			GameStateManager.Instance.SwitchState(new PauseState(this));
+			*/
     }
 
     public override void ExitState()
