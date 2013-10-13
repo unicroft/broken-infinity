@@ -33,12 +33,16 @@ public class VersusState :  GameState
 		{
 			_player.GetComponent<PlayerController>().enabled = false;
 			_player.GetComponent<Rigidbody>().useGravity = false;
+			_player.GetComponentInChildren<SpriteAnimator>().IsPaused = true;
 			timeremaining = 3;
+			//var fade = Camera.main.GetComponentInChildren<FadeMaterial>();
+			//fade.anim = FadeType.fadeOut;
 		}
 		else
 		{
 			_player.GetComponent<PlayerController>().enabled = true;
-			_player.GetComponent<Rigidbody>().useGravity = true;	
+			_player.GetComponent<Rigidbody>().useGravity = true;
+			_player.GetComponentInChildren<SpriteAnimator>().IsPaused = false;
 			
 			_player.GetComponent<Rigidbody>().velocity = savedVelocity;
 		}
@@ -53,6 +57,7 @@ public class VersusState :  GameState
 			{
 				_player.GetComponent<PlayerController>().enabled = true;
 				_player.GetComponent<Rigidbody>().useGravity = true;
+				_player.GetComponentInChildren<SpriteAnimator>().IsPaused = false;
 				started = true;
 			}
 		}
@@ -68,11 +73,12 @@ public class VersusState :  GameState
 				
 				Camera.main.transform.position = new Vector3(0,1,-10);
 				
-				_player.GetComponentInChildren<SpriteAnimator>().mFramesPerSecond = 0;
 				_player.transform.position = new Vector3(80,0,20);
 				_player.transform.rotation = Quaternion.identity;
+				
 				_player.GetComponent<Rigidbody>().useGravity = false;
 				_player.GetComponent<Rigidbody>().velocity = new Vector3(0,0,0);
+				_player.GetComponentInChildren<SpriteAnimator>().IsPaused = true;
 				GameStateManager.Instance.taken = 0;
 				
 				GameObject.Find("TerrainManager").GetComponent<TerrainManager>().ResetTerrain();
@@ -112,6 +118,7 @@ public class VersusState :  GameState
     {
         _player.GetComponent<PlayerController>().enabled = false;
 		_player.GetComponent<Rigidbody>().useGravity = false;
+		_player.GetComponentInChildren<SpriteAnimator>().IsPaused = true;
 		savedVelocity = _player.GetComponent<Rigidbody>().velocity;
 		_player.GetComponent<Rigidbody>().velocity = new Vector3(0,0,0);
     }
