@@ -1,0 +1,199 @@
+MASTER AUDIO PLUGIN - By DarkTonic, Inc. (c) 2012-2013 
+
+- Code by Brian Hunsaker
+
+
+-V 2.7.5 - Added warning instead of crashing MA on init when you have more than 1 Sound Group with the same name.
+
+-V 2.7.4 - Added "delay sound" field to Playmaker action and all API PlaySound methods, so you can schedule a sound to be played.
+
+-V 2.7.3 - Added the ability to be notified when a sound is done playing, so you can stop an animation or things like that.
+	- Added MasterAudio.GetGroupVolume to read the volume before modifying it.
+	- Adjusting bus volume will now immediately change volume of clips playing in that bus.
+	- Adjusting group volume will now immediately change volume of clips playing in that bus.
+	- Removed SetBusVolumeByIndex and GrabBusByIndex methods. They were not useful. Use the "by name" ones instead please.
+	- Fixed bug with positioning sounds.
+
+-V 2.7.2 - Added the ability to specify a clip in a Resource file for a Sound Group variation.
+	- Added methods to replace variation clips at runtime:
+		1.ChangeVariationClipFromResources
+		2.ChangeVariationClip
+	- Added methods to create new Sound Groups on the fly, from Resource Files as well.
+		1. CreateNewSoundGroup
+		2. CreateNewSoundGroupFromResources
+	- Added DynamicSoundGroupCreator prefab to specify any number of Sound Groups to create on the fly. It can load sounds from Resources as well.
+
+
+
+-V 2.7 	- Added 19 Playmaker custom actions in a Playmaker optional package included in the plugin.
+
+
+	- Dragging songs to a playlist now uses the first song for one if it has no clip.
+	 
+	- Master Audio now complains if "play sound" methods are called and there is no MasterAudio prefab in the scene.
+	 
+	- Now sorting Sound Groups alphabetically in each bus and in "no bus".
+	 
+	- MasterAudio.PlaySound now also supports "attach to caller".
+	 
+	- Added warnings about Playlist methods being disabled if you use "single audio source" instead of PlaylistController.
+	 
+	- Audio Event script now labels dropdowns correctly as "Sound Group", not "Sound Type".
+	 
+	- Added settings for "missing sound log mode", which defaults to logging errors, but you can switch to log warnings instead.
+	 
+	- Added optional child name parameter to PlaySoundVariable as well.
+	 
+	- Removed useless "attach to source" parameter from 2D version of PlaySound method.
+	 
+	- Added StopPlaylist method.
+	 
+	- Bus volume command changed name. Also added "SetBusVolumeByName".
+	 
+	- Fixed bug: attaching sound to prefab didn't play the sound from the correct location the first time.
+	 
+	- Fixed Bug: when attached to prefab, calling setActiveRecursively (Player dies in demo scene), the Audio can no longer be played the next time.
+
+-V 2.6  - Added custom "AudioManager" Editor Window under Window menu to explain and create Master Audio & Playlist Controller Prefabs for you.
+	 
+	- Added multiple playlist support in the Master Audio Inspector.
+	 
+	- Streamlined group, variation and playlist creation. Drag & drop multiple clips now and it's done!
+
+
+
+-V 2.5  - Made PlaylistController volume slider work at runtime in the editor.
+	 
+	- Added "play sound" speaker icon in the mixer section for runtime "audition" purposes so you don't have to code things to hear the sounds when you want.
+		- Added checkbox to "not destroy on load" Master Audio and Playlist Controller. Music playlist can now continue from scene to scene.
+	 
+	- Added Checkbox to repeat playlist from beginning or not. Previously always did.
+	 
+	- Made Event Scripts able to selectably reparent variation onto a prefab. It goes back into the Master Audio prefab when caller prefab is disabled.
+
+
+
+-V 2.4.4 - Added empty defaults always to New SoundGroup section.
+	 
+	- Added random volume slider to each SoundGroup variation.
+	 
+	- Made Master Audio volume work in realtime during Editor play.
+	 
+	- Removed "SoundType" enum. Now play sounds with strings. No more editing code files!
+	 
+	- Added an alert in the Master Audio prefab if you have no Playlist Controller in the scene and a button to create from there.
+	 
+	- Added "group by bus" checkbox so you can choose to see your Sound Groups in sections.
+
+
+
+-V 2.4.2 - Fixed bug with Awake event on Playlist Controller
+	 
+	- Fixed inspector bug for Playlist Controller section in Master Audio prefab.
+	 
+	- Added separate "show music ducking" checkbox to Master Audio prefab to minimize it without disabling.
+	 
+	- Added command "Stop Playlist" to fade out the current music playing and not advance to a new track.
+
+
+
+-V 2.4.1 - Add bussing section to groups. Allows you to route each group to a bus, which allows you to control the volume of all groups assigned to that bus with a single fader. 
+		- Added Solo and mute switches to bus section. They will solo or mute all matching groups.
+	 
+	- Made all mixer and bus controls work while playing the game in the editor.
+	 
+	- Fixed false warning about PlaylistController that occurs in Unity 4.2
+
+
+
+
+-V 2.4  - (breaking change) Added a SoundGroupVariations script to each Sound Group Variation. Please delete all Sound Groups and recreate them from the MasterAudio prefab so the script will be in place.
+	
+	- Added random pitch to Sound Group variations. It will add a randomly negative or positive number up to the number you specify to the original pitch.
+	
+	- Fixed bug with zero variations for a SoundGroup at runtime.
+	
+	- Add an extra optional parameter play a variation of a Sound Group specifically by name.
+	
+	- Added other parameters of Audio Source to Sound Group and Variation Inspectors for easy access.
+	
+	- Fixed bug where cloned instances (using Weight) didn't copy the pitch of the audio source from the original.
+
+
+
+-V 2.3.1  - Added polyphony limits for each Group. i.e. 10 variations, but only 3 can play at once.
+	  
+	- Add a single audio source ducker as well as an alternative for those who can't use Playlist Controller
+
+
+
+-V 2.3  - Fixed bug where auto advance won't take cross fade time into account, producing an artifact.
+   	
+	- Renamed all example scripts to avoid name collision.
+	
+	- Moved MusicDucker.cs code into PlaylistController.cs 
+	
+	- Added Master volume slider for PlaylistController
+	
+	- Now logging an error if Playlist contains any songs and there's no PlaylistController in the scene. 
+	
+	- Now logging an error if you call PlaylistController methods without one in the scene.
+	
+	- Added methods to modify master volume, group volume, PlaylistController volume, mute & solo switches via script at runtime.
+
+
+
+-V 2.2 	- Added volume sliders for each Sound group's variations all on the Group inspector for quick adjustment.
+	
+	- Added playlist functionality to Master Audio, with random, auto advance, loop, cross-fading and the ability to call them from code.
+
+
+
+-V 2.1.1 - Added more ducking controls. Ability to set the % of clip at which the volume starting unducking (returning to normal volume).
+
+
+
+-V 2.1  - Fixed bug with mixer controls.
+
+
+
+-V 2.0  - Major UI overhaul. Added creation controls into MasterAudio and SoundGroups so you don't have to duplicate sounds and variations manually.
+	
+	- Added weighting for variations.
+	
+	- Added replay limit controls (by time or frame count) of each sound group to prevent artifacts on extremely fast sound triggering.
+	
+	- Added group virtual mixer with sliders, mute and solo switches.
+
+
+
+-V 1.5  - Fixed delay bug with AudioSourceEnded and moved it into a new EventCalcSounds script.
+	
+	- Fixed multiple sounds sometimes for OnBecameVisible (Unity bug).
+	
+	- Added MouseClick event.
+	
+	- Added layer and tag filter for Collision and Trigger events to selectively play sounds.
+
+
+
+-V 1.4  - Added AudioSourceEnded event and improved custom inspectors to be more collapsable. 
+	
+	- Added "Never Interrupt Sound" to each Sound group. This will override the Retrigger Played Percentage if checked for that sound group. 
+	
+	- Submitted to Asset Store 1/26/2013
+
+
+
+-V 1.1  - 1.3, Added more documentation and improvements to custom inspectors. Released 1/2012
+
+
+-V 1.0  - Released 12/22/2012
+
+
+
+
+
+
+
+

@@ -3,95 +3,83 @@ using System.Collections;
 
 public class SpriteAnimator : MonoBehaviour
 {
-    public int mColumns = 7;
-    public int mRows = 4;
-    public float mFramesPerSecond = 10f;
-    public bool mIsPaused = false;
-
-    int mNbRestart = 0;
-    int mAtFrame = 0;
-    bool mIsRestartFrame = false;
-
-    int mIndex = 0;
-    public int Index
+ 	public int Columns = 5;
+    public int Rows = 5;
+    public float FramesPerSecond = 10f;
+    public bool RunOnce = true;
+	public bool IsPaused = true;
+	
+	private bool isAnimating = false;
+	public bool hasPlayed = false;
+ 
+    public float RunTimeInSeconds
     {
-        get { return mIndex; }
+        get
+        {
+            return ( (1f / FramesPerSecond) * (Columns * Rows) );
+        }
     }
-
+ 
+    private Material materialCopy = null;
+ 
     void Start()
     {
-        StartCoroutine(updateTiling());
-
-        Vector2 size = new Vector2((1.0f / mColumns), (1.0f / mRows));
-
+        // Copy its material to itself in order to create an instance not connected to any other
+        materialCopy = new Material(renderer.sharedMaterial);
+        renderer.sharedMaterial = materialCopy;
+ 
+        Vector2 size = new Vector2(1f / Columns, 1f / Rows);
         renderer.sharedMaterial.SetTextureScale("_MainTex", size);
     }
-
-    public void RestartFrame(int nbRestart, int atFrame)
+ 
+	void Update()
+	{
+		if (!isAnimating && !IsPaused)
+		{
+			if (RunOnce)
+			{
+				if (!hasPlayed)
+					StartCoroutine(UpdateTiling());
+			}
+			else 
+				StartCoroutine(UpdateTiling());
+		}
+	}
+	
+    private IEnumerator UpdateTiling()
     {
-        mNbRestart = nbRestart;
-        mAtFrame = atFrame;
-        mIndex = 0;
-
-        mIsRestartFrame = true;
-    }
-
-    IEnumerator updateTiling()
-    {
+		isAnimating = true;
+        float x = 0f;
+        float y = 0f;
+        Vector2 offset = Vector2.zero;
+ 
         while (true)
         {
-            if (!mIsPaused)
+            for (int i = Rows-1; i >= 0; i--) // y
             {
-				if (mFramesPerSecond < 0)
-				{
-                	mIndex--;
-					mFramesPerSecond *= -1;
-				}
-				else
-					mIndex++;
-
-                if (mIndex >= (mRows * mColumns))
+                y = (float) i / Rows;
+ 
+                for (int j = 0; j <= Columns-1; j++) // x
                 {
-                    mIndex = 0;
+					if (!IsPaused)
+					{
+	                    x = (float) j / Columns;
+	 
+	                    offset.Set(x, y);
+	 
+	                    renderer.sharedMaterial.SetTextureOffset("_MainTex", offset);
+					}
+					else j--;
+                    yield return new WaitForSeconds(1f / FramesPerSecond);
                 }
-				else if (mIndex < 0)
-					mIndex = (mRows * mColumns) - 1;
-                if (mIsRestartFrame)
-                {
-                    if (mIndex == mAtFrame)
-                    {
-                        mIndex = 0;
-                        mNbRestart--;
-                    }
-
-                    if (mNbRestart == 0)
-                    {
-                        mIsRestartFrame = false;
-                        mIsPaused = true;
-
-                        mIndex = mAtFrame;
-                    }
-                }
-			
-				float x = (mIndex % mColumns) / (float)mColumns;
-				int y = (mIndex / mColumns);
-				y = ((y-mRows/2) * -1 + mRows/2) % mRows ; // lets flip
-				float yf = y / (float)mRows;
-				//Debug.Log(mIndex + " " + x + " " + yf);
-				
-				
-                Vector2 offset = new Vector2(x, yf);
-
-                renderer.sharedMaterial.SetTextureOffset("_MainTex", offset);
             }
-			
-			if (mFramesPerSecond != 0)
-			{
-				
-            		yield return new WaitForSeconds(1.0f / mFramesPerSecond);
-			}
-			else
-				yield break;
-		}
-    }		
+			hasPlayed = true;
+ 
+            if (RunOnce)
+            {
+				isAnimating = false;
+                yield break;
+            }
+        }
+    }
 }

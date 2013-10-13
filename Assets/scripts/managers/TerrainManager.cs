@@ -13,7 +13,7 @@ public class TerrainManager : MonoBehaviour {
 	private Camera _camera;
 	private Transform _cameraTransform;
 	
-	private const int numberOfSUndergroundTile = 3;
+	private const int numberOfSUndergroundTile = 2;
 	
 	private GameObject[] _terrainGameObjects = new GameObject[2];
 	private GameObject[][] _undergroundGameObjects = new GameObject[2][];
@@ -36,10 +36,8 @@ public class TerrainManager : MonoBehaviour {
 		
 		//terrain setup
 		terrainGenerator = new TerrainGenerator(_camera);
-		_terrain = new Terrain( gameObject, terrainGenerator);
-		//_terrain.terrainGenerator.testOtherSetting();
-		
-		_terrain.textureSize = terrainMaterialBorder.mainTexture.height;
+		ResetTerrain();
+		ChangeTerrainColor(new Color(Random.value/2+0.5f,Random.value/2+0.5f,Random.value/2+0.5f,1.0f));
 		
 		for(var i = 0; i <= 1; i++)
 		{
@@ -76,8 +74,31 @@ public class TerrainManager : MonoBehaviour {
 				_undergroundGameObjects[i][j] = go;
 			}
 		}
+	}
+	
+	public void ResetTerrain()
+	{
+		_terrain = new Terrain( gameObject, terrainGenerator);
+		_terrain.textureSize = terrainMaterialBorder.mainTexture.height;
+		_meshMaxX = 0;
 		
-		
+		foreach(List<GameObject> lgo in _objs)
+		{
+			if(lgo != null)
+			{
+				foreach(GameObject go in lgo)
+				{
+					GameObject.Destroy(go);	
+				}
+				lgo.Clear ();
+			}
+		}
+	}
+	
+	public void ChangeTerrainColor(Color color)
+	{
+		terrainMaterialBorder.color = color;
+		terrainMaterialInside.color = color;
 	}
 	
 	// Update is called once per frame
