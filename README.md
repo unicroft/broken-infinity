@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Broken Infinity
 ![Broken Infinity Logo](http://raw.github.com/unicroft/broken-infinity/master/logo.png)
 
@@ -25,3 +26,9 @@ This game has been created using Unity, see [Publishing Builds](http://docs.unit
 Binaries of the release are available @todo: Folder or github release? Guys?
 
 ![Cat](http://i.imgur.com/U8qVmSz.gif)
+=======
+broken-infinity
+===============
+
+Jeu Game Jam AEEI A13
+>>>>>>> b1feb1b67e2d7ad797048c8e2f0e3949e53655ff
