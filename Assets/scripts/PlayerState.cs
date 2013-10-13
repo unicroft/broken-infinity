@@ -11,17 +11,7 @@ public class PlayerState : BaseGame
         Jumping, 
     }
 
-    [System.Serializable]
-    public class TextureSettings
-    {
-        public State mState = State.Idle;
-        public Texture mSpriteSheet = null;
-
-        public SpriteSettings mSpriteSettings = new SpriteSettings();
-    }
-
 //    public BackgroundTranslate mSpeedReference = null;
-    public List<TextureSettings> mSpriteList = new List<TextureSettings>();
     
     public AudioSource mJumpSound = null;
     
@@ -113,32 +103,6 @@ public class PlayerState : BaseGame
     protected override void SetSpriteTexture()
     {
         //SpriteManager.Instance.SetSpriteTexture(this.gameObject, GetTexture(), GetSpriteSettings());
-    }
-
-    Texture GetTexture()
-    {
-        foreach (TextureSettings state in mSpriteList)
-        {
-            if (state.mState == (State)mStateID)
-            {
-                return state.mSpriteSheet;
-            }
-        }
-
-        return null;
-    }
-
-    SpriteSettings GetSpriteSettings()
-    {
-        foreach (TextureSettings state in mSpriteList)
-        {
-            if (state.mState == (State)mStateID)
-            {
-                return state.mSpriteSettings;
-            }
-        }
-
-        return new SpriteSettings();
     }
 
     void PopAction()

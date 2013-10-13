@@ -2,14 +2,6 @@
 using System.Collections;
 using System.Text;
 
-[System.Serializable]
-public class SpriteSettings
-{
-    public int mNbColumns = 2;
-    public int mNbRows = 2;
-    public float mFramesPerSecond = 10.0f;
-}
-
 public abstract class BaseGame : MonoBehaviour
 {
     public static bool IsEnvironmentMoving = false;

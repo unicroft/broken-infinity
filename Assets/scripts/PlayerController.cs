@@ -19,8 +19,6 @@ public class PlayerController : BaseGame
     {
         public State mState = State.Idle;
         public Texture mSpriteSheet = null;
-
-        public SpriteSettings mSpriteSettings = new SpriteSettings();
     }
 
 //    public BackgroundTranslate mSpeedReference = null;
@@ -213,18 +211,5 @@ public class PlayerController : BaseGame
         }
 
         return null;
-    }
-
-    SpriteSettings GetSpriteSettings()
-    {
-        foreach (TextureSettings state in mSpriteList)
-        {
-            if (state.mState == (State)mStateID)
-            {
-                return state.mSpriteSettings;
-            }
-        }
-
-        return new SpriteSettings();
     }
 }
