@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Broken Infinity
 ![Broken Infinity Logo](http://raw.github.com/unicroft/broken-infinity/master/logo.png)
 
@@ -7,7 +6,6 @@ Broken Infinity is a `turn by turn` `racing game` with `Infinity and null` theme
 
 ## Story
 
-@todo: Nicolas, speak your mind here
 
 ## Prerequises
 
@@ -15,7 +13,7 @@ Two controllers and a computer
 
 ## Instructions
 
-Run the desired binary and choose your graphical configuration. This game has been tested for 1920x1080, bu may work on other resolutions as well. On the Title screen, players have to hold the shown button for 4 seconds untill the game starts. From there, you should be able to learn how to play by your own ;)
+Run the desired binary and choose your graphical configuration. This game has been tested for 1280x720, bu may work on other resolutions as well. On the Title screen, players have to hold the shown button for 4 seconds untill the game starts. From there, you should be able to learn how to play by your own ;)
 
 ## Compilation
 
@@ -23,12 +21,11 @@ This game has been created using Unity, see [Publishing Builds](http://docs.unit
 
 ## Binaries
 
-Binaries of the release are available @todo: Folder or github release? Guys?
+Binaries of the release are available in the bin folder
 
 ![Cat](http://i.imgur.com/U8qVmSz.gif)
-=======
+
 broken-infinity
-===============
 
 Jeu Game Jam AEEI A13
->>>>>>> b1feb1b67e2d7ad797048c8e2f0e3949e53655ff
+
