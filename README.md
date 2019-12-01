@@ -1,7 +1,6 @@
 # Broken Infinity
-![Broken Infinity Logo](http://raw.github.com/unicroft/broken-infinity/master/logo.png)
+![Broken Infinity Logo](/borken-infinity-dragon.png)
 
-@todo: verify logo url once it's on github ;)
 Broken Infinity is a `turn by turn` `racing game` with `Infinity and null` theme. The game got developped in 48h during the [AEEI Game Jam A2013](http://www.jam.aeei.ca/).
 
 ## Story
